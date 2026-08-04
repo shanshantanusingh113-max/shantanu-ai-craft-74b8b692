@@ -235,8 +235,8 @@ function Index() {
                 <img
                   src={profile}
                   alt="Portrait of Shantanu Singh"
-                  width={816}
-                  height={816}
+                  width={722}
+                  height={714}
                   className="aspect-square w-full rounded-[2rem] object-cover"
                 />
               </div>
