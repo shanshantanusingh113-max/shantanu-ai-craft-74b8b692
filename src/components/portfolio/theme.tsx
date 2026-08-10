@@ -39,14 +39,24 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      className="glass relative inline-flex h-9 w-16 shrink-0 items-center rounded-full px-1 transition-colors"
+      aria-pressed={isDark}
+      title={isDark ? "Light mode" : "Dark mode"}
+      className="btn-ghost relative grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-xl"
     >
-      <span
-        className="btn-glow flex h-7 w-7 items-center justify-center rounded-full transition-transform duration-300"
-        style={{ transform: isDark ? "translateX(28px)" : "translateX(0)" }}
-      >
-        {isDark ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-      </span>
+      <Sun
+        className="absolute h-4 w-4 text-primary transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        style={{
+          opacity: isDark ? 0 : 1,
+          transform: isDark ? "rotate(-90deg) scale(0.4)" : "rotate(0deg) scale(1)",
+        }}
+      />
+      <Moon
+        className="absolute h-4 w-4 text-primary transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        style={{
+          opacity: isDark ? 1 : 0,
+          transform: isDark ? "rotate(0deg) scale(1)" : "rotate(90deg) scale(0.4)",
+        }}
+      />
     </button>
   );
 }
