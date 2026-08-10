@@ -219,9 +219,9 @@ function Index() {
     const name = String(fd.get("name") ?? "").trim();
     const email = String(fd.get("email") ?? "").trim();
     const message = String(fd.get("message") ?? "").trim();
-    if (name.length < 2) next.name = "Please enter your name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = "Enter a valid email address.";
-    if (message.length < 10) next.message = "A little more detail would help (10+ characters).";
+    if (name.length < 2) next['name'] = "Please enter your name.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next['email'] = "Enter a valid email address.";
+    if (message.length < 10) next['message'] = "A little more detail would help (10+ characters).";
     setErrors(next);
     if (Object.keys(next).length) {
       toast.error("Please fix the highlighted fields.");
@@ -759,8 +759,8 @@ function Index() {
                       Name
                     </span>
                     <input name="name" className={field} placeholder="Your name" />
-                    {errors.name && (
-                      <span className="mt-1.5 block text-xs text-destructive">{errors.name}</span>
+                    {errors['name'] && (
+                      <span className="mt-1.5 block text-xs text-destructive">{errors['name']}</span>
                     )}
                   </label>
                   <label className="block text-sm">
@@ -768,8 +768,8 @@ function Index() {
                       Email
                     </span>
                     <input name="email" type="email" className={field} placeholder="you@example.com" />
-                    {errors.email && (
-                      <span className="mt-1.5 block text-xs text-destructive">{errors.email}</span>
+                    {errors['email'] && (
+                      <span className="mt-1.5 block text-xs text-destructive">{errors['email']}</span>
                     )}
                   </label>
                 </div>
@@ -793,8 +793,8 @@ function Index() {
                     className={`${field} resize-none`}
                     placeholder="Tell me about your idea..."
                   />
-                  {errors.message && (
-                    <span className="mt-1.5 block text-xs text-destructive">{errors.message}</span>
+                  {errors['message'] && (
+                    <span className="mt-1.5 block text-xs text-destructive">{errors['message']}</span>
                   )}
                 </label>
                 <button
