@@ -33,6 +33,7 @@ import { Cursor } from "@/components/portfolio/Cursor";
 import { SectionHeading } from "@/components/portfolio/SectionHeading";
 import { Typewriter } from "@/components/portfolio/Typewriter";
 import profile from "@/assets/shantanu.jpg";
+import resumeAsset from "@/assets/resume.pdf.asset.json";
 
 const TITLE = "Shantanu Singh — AI & ML Student, Python & C++ Developer";
 const DESC =
