@@ -33,6 +33,7 @@ import { Cursor } from "@/components/portfolio/Cursor";
 import { SectionHeading } from "@/components/portfolio/SectionHeading";
 import { Typewriter } from "@/components/portfolio/Typewriter";
 import profile from "@/assets/shantanu.jpg";
+import resumeAsset from "@/assets/resume.pdf.asset.json";
 
 const TITLE = "Shantanu Singh — AI & ML Student, Python & C++ Developer";
 const DESC =
@@ -312,14 +313,16 @@ function Index() {
                 >
                   <Mail className="h-4 w-4 text-primary" /> Let&apos;s Connect
                 </a>
-                <button
-                  type="button"
-                  onClick={() => toast.info("Resume will be available soon.")}
+                <a
+                  href={resumeAsset.url}
+                  download="Shantanu_Singh_Resume.pdf"
+                  target="_blank"
+                  rel="noreferrer noopener"
                   className="inline-flex items-center gap-2 rounded-full px-3 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
                 >
                   <Download className="h-4 w-4" />
                   <span className="link-underline">Resume</span>
-                </button>
+                </a>
               </div>
 
               <div
