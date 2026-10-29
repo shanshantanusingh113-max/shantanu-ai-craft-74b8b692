@@ -84,8 +84,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: SITE.name },
       { name: "keywords", content: SITE.keywords },
       { name: "robots", content: "index, follow, max-image-preview:large" },
-      { name: "theme-color", content: "#120c24" },
-      { name: "color-scheme", content: "dark light" },
+      { name: "theme-color", content: "#ffffff" },
+      { name: "color-scheme", content: "light" },
       { name: "format-detection", content: "telephone=no" },
     ],
     links: [
@@ -99,10 +99,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "manifest", href: "/site.webmanifest" },
     ],
     scripts: [
-      // Before paint: apply saved theme (no flash), flag JS for reveal animations,
+      // Before paint: flag JS for reveal animations,
       // and only play the intro animation once per browser session.
       {
-        children: `(function(){var d=document.documentElement;d.classList.add("js");try{var t=localStorage.getItem("theme");if(!t)t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";if(t==="dark")d.classList.add("dark");if(sessionStorage.getItem("booted"))d.classList.add("seen");else sessionStorage.setItem("booted","1")}catch(e){d.classList.add("dark")}})()`,
+        children: `(function(){var d=document.documentElement;d.classList.add("js");try{if(sessionStorage.getItem("booted"))d.classList.add("seen");else sessionStorage.setItem("booted","1")}catch(e){}})()`,
       },
       { type: "application/ld+json", children: JSON.stringify(jsonLd()) },
     ],

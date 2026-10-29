@@ -139,7 +139,7 @@ function Index() {
   };
 
   const field =
-    "w-full border-b border-white/20 bg-transparent py-3 text-base text-[#f1eef9] outline-none transition-colors placeholder:text-[#a39cbc]/60 focus:border-[#b5dd3c]";
+    "w-full border-b border-border bg-transparent py-3 text-base outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary";
 
   return (
     <div id="top" className="relative min-h-screen overflow-x-clip">
@@ -359,14 +359,14 @@ function Index() {
         </section>
 
         {/* ── Contact ──────────────────────────────────────────── */}
-        <section id="contact" className="relative overflow-hidden bg-[#120c24] text-[#f1eef9]">
+        <section
+          id="contact"
+          className="relative overflow-hidden border-t border-border bg-secondary/40"
+        >
+          <div aria-hidden className="grid-bg pointer-events-none absolute inset-0 opacity-70" />
           <div
             aria-hidden
-            className="grid-bg pointer-events-none absolute inset-0 opacity-40 [--grid-line:rgb(255_255_255/5%)]"
-          />
-          <div
-            aria-hidden
-            className="floaty pointer-events-none absolute -right-40 -top-40 h-[30rem] w-[30rem] rounded-full bg-[#2d708e] opacity-40 blur-[120px]"
+            className="floaty pointer-events-none absolute -right-40 -top-40 h-[30rem] w-[30rem] rounded-full bg-[var(--v3)] opacity-15 blur-[120px]"
           />
           <div className="relative mx-auto max-w-6xl px-5 py-28 sm:py-36">
             <Scramble
@@ -376,14 +376,14 @@ function Index() {
             />
             <div className="mt-14 grid gap-14 lg:grid-cols-2">
               <InView reveal="left">
-                <p className="max-w-md text-lg leading-relaxed text-[#c9c3dd]">
+                <p className="max-w-md text-lg leading-relaxed text-muted-foreground">
                   I'm looking for ML engineering internships and interesting problems. Email is the
                   fastest way to reach me.
                 </p>
                 <div className="mt-8 flex flex-wrap items-center gap-3">
                   <a
                     href={`mailto:${SITE.email}`}
-                    className="min-w-0 font-display text-lg font-semibold text-[#b5dd3c] sm:text-2xl"
+                    className="min-w-0 font-display text-lg font-semibold text-primary sm:text-2xl"
                   >
                     <Scramble text={SITE.email} onHover duration={600} className="break-all" />
                   </a>
@@ -391,12 +391,12 @@ function Index() {
                     type="button"
                     onClick={copyEmail}
                     aria-label="Copy email address"
-                    className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/15 transition-colors hover:bg-white/10"
+                    className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border transition-colors hover:bg-background"
                   >
                     {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                   </button>
                 </div>
-                <p className="mt-6 flex items-center gap-2 text-sm text-[#c9c3dd]">
+                <p className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
                   <MapPin className="h-4 w-4" /> Greater Noida, India
                 </p>
                 <div className="mt-8 flex flex-wrap gap-2">
@@ -407,7 +407,7 @@ function Index() {
                         target="_blank"
                         rel="noopener"
                         aria-label={label}
-                        className="grid h-12 w-12 place-items-center rounded-full border border-white/15 transition-colors hover:border-[#b5dd3c] hover:text-[#b5dd3c]"
+                        className="grid h-12 w-12 place-items-center rounded-full border border-border transition-colors hover:border-primary hover:text-primary"
                       >
                         <Icon className="h-5 w-5" />
                       </a>
@@ -418,7 +418,7 @@ function Index() {
                       href={SITE.resume}
                       target="_blank"
                       rel="noopener"
-                      className="inline-flex h-12 items-center gap-2 rounded-full border border-white/15 px-5 text-sm font-semibold transition-colors hover:border-[#b5dd3c] hover:text-[#b5dd3c]"
+                      className="inline-flex h-12 items-center gap-2 rounded-full border border-border px-5 text-sm font-semibold transition-colors hover:border-primary hover:text-primary"
                     >
                       <FileText className="h-4 w-4" /> Resume
                     </a>
@@ -435,7 +435,7 @@ function Index() {
                     ] as const
                   ).map(([n, label, type, ac]) => (
                     <label key={n} className="block">
-                      <span className="text-sm text-[#a39cbc]">{label}</span>
+                      <span className="text-sm text-muted-foreground">{label}</span>
                       <input
                         name={n}
                         type={type}
@@ -444,12 +444,12 @@ function Index() {
                         aria-invalid={!!errors[n]}
                       />
                       {errors[n] && (
-                        <span className="mt-1.5 block text-sm text-[#fb923c]">{errors[n]}</span>
+                        <span className="mt-1.5 block text-sm text-destructive">{errors[n]}</span>
                       )}
                     </label>
                   ))}
                   <label className="block">
-                    <span className="text-sm text-[#a39cbc]">Message</span>
+                    <span className="text-sm text-muted-foreground">Message</span>
                     <textarea
                       name="message"
                       rows={4}
@@ -457,15 +457,12 @@ function Index() {
                       aria-invalid={!!errors["message"]}
                     />
                     {errors["message"] && (
-                      <span className="mt-1.5 block text-sm text-[#fb923c]">
+                      <span className="mt-1.5 block text-sm text-destructive">
                         {errors["message"]}
                       </span>
                     )}
                   </label>
-                  <button
-                    type="submit"
-                    className="btn btn-solid [--background:#120c24] [--foreground:#f1eef9] [--primary-foreground:#120c24] [--primary:#b5dd3c]"
-                  >
+                  <button type="submit" className="btn btn-solid">
                     Send message <Send className="h-4 w-4" />
                   </button>
                 </form>
@@ -476,17 +473,17 @@ function Index() {
       </main>
 
       {/* ── Footer ───────────────────────────────────────────────── */}
-      <footer className="overflow-hidden bg-[#120c24] text-[#f1eef9]">
-        <Marquee speed={45} className="border-t border-white/10 py-6">
+      <footer className="overflow-hidden bg-background">
+        <Marquee speed={45} className="border-t border-border py-6">
           <span className="text-viridis whitespace-nowrap pr-10 font-display text-[clamp(4rem,14vw,11rem)] font-extrabold leading-[1.05] tracking-[-0.05em]">
             Shantanu Singh ✦ AI/ML engineer ✦
           </span>
         </Marquee>
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 border-t border-white/10 px-5 py-8 text-sm text-[#a39cbc] sm:flex-row">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 border-t border-border px-5 py-8 text-sm text-muted-foreground sm:flex-row">
           <p>© {new Date().getFullYear()} Shantanu Singh. Designed and built by me.</p>
           <nav aria-label="Footer" className="flex flex-wrap gap-5">
             {["about", "work", "skills", "contact"].map((id) => (
-              <a key={id} href={`#${id}`} className="link-u capitalize hover:text-[#f1eef9]">
+              <a key={id} href={`#${id}`} className="link-u capitalize hover:text-foreground">
                 {id}
               </a>
             ))}
@@ -494,7 +491,7 @@ function Index() {
               href={SITE.resume}
               target="_blank"
               rel="noopener"
-              className="link-u hover:text-[#f1eef9]"
+              className="link-u hover:text-foreground"
             >
               Resume <ArrowUpRight className="inline h-3.5 w-3.5" />
             </a>

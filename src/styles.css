@@ -5,7 +5,7 @@
 @import "@fontsource-variable/geist/index.css";
 @import "@fontsource-variable/geist-mono/index.css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(.dark *)); /* unused: site is light-only */
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -60,7 +60,7 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Viridis — matplotlib's default colormap, the colour of every ML plot. */
+/* White theme. Accents are viridis — matplotlib's default colormap, the colour of every ML plot. */
 :root {
   --radius: 0.85rem;
   --v1: #3b1f6e;
@@ -68,9 +68,9 @@
   --v3: #22a07a;
   --v4: #8cc63f;
   --v5: #e8d33a;
-  --viridis: linear-gradient(90deg, #4a1f78, #2d708e 30%, #22a07a 58%, #8cc63f 80%, #e8d33a);
+  --viridis: linear-gradient(90deg, #441a74, #2d688e 30%, #1c9270 58%, #5f9e22 80%, #b39812);
 
-  --background: #f5f4fa;
+  --background: #ffffff;
   --foreground: #1a1233;
   --surface: #ffffff;
   --card: #ffffff;
@@ -79,43 +79,19 @@
   --popover-foreground: #1a1233;
   --primary: #1d7f68;
   --primary-foreground: #ffffff;
-  --secondary: #ebe8f4;
+  --secondary: #f4f3f8;
   --secondary-foreground: #1a1233;
-  --muted: #ebe8f4;
-  --muted-foreground: #5f587a;
+  --muted: #f4f3f8;
+  --muted-foreground: #5b5675;
   --accent: #3b1f6e;
   --accent-foreground: #ffffff;
   --destructive: #c2410c;
   --destructive-foreground: #ffffff;
-  --border: #ddd9ea;
+  --border: #e6e3ef;
   --input: #d3cee4;
   --ring: #2d708e;
   --grid-line: rgb(26 18 51 / 6%);
   --shadow-lift: 0 1px 2px rgb(26 18 51 / 6%), 0 24px 50px -28px rgb(59 31 110 / 35%);
-}
-
-.dark {
-  --background: #120c24;
-  --foreground: #f1eef9;
-  --surface: #1a1333;
-  --card: #1a1333;
-  --card-foreground: #f1eef9;
-  --popover: #1a1333;
-  --popover-foreground: #f1eef9;
-  --primary: #b5dd3c;
-  --primary-foreground: #120c24;
-  --secondary: #241b44;
-  --secondary-foreground: #f1eef9;
-  --muted: #241b44;
-  --muted-foreground: #a39cbc;
-  --accent: #6b47b8;
-  --accent-foreground: #ffffff;
-  --destructive: #fb923c;
-  --border: rgb(255 255 255 / 9%);
-  --input: rgb(255 255 255 / 14%);
-  --ring: #8cc63f;
-  --grid-line: rgb(255 255 255 / 4%);
-  --shadow-lift: 0 1px 2px rgb(0 0 0 / 40%), 0 30px 60px -30px rgb(0 0 0 / 80%);
 }
 
 /* ── Utilities ───────────────────────────────────────────────────────── */

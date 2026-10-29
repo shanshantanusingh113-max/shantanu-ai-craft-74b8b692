@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { FileText } from "lucide-react";
-import { ThemeToggle } from "./theme";
 import { SITE } from "@/lib/site";
 
 const LINKS = [
@@ -106,7 +105,6 @@ export function Nav() {
           >
             <FileText className="h-4 w-4" /> Resume
           </a>
-          <ThemeToggle />
           <button
             type="button"
             className="relative grid h-10 w-10 place-items-center rounded-full lg:hidden"

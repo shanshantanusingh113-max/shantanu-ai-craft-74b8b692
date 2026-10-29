@@ -10,12 +10,13 @@ import { prefersReducedMotion } from "./Motion";
  * the particles have taken its place.
  */
 
+// Viridis, deepened slightly so the yellow end stays legible on white.
 const STOPS: [number, number, number][] = [
-  [74, 31, 120],
-  [45, 112, 142],
-  [34, 160, 122],
-  [140, 198, 63],
-  [232, 211, 58],
+  [68, 26, 116],
+  [45, 104, 142],
+  [28, 146, 112],
+  [104, 168, 40],
+  [196, 166, 18],
 ];
 function viridis(t: number) {
   const x = Math.min(0.999, Math.max(0, t)) * (STOPS.length - 1);
@@ -144,14 +145,11 @@ export function NeuralHero({
       if (targets.length) host.setAttribute("data-particles-ready", "");
     };
 
-    const dark = () => document.documentElement.classList.contains("dark");
-
     const frame = (now: number) => {
       raf = 0;
       if (!running || disposed) return;
       ctx.clearRect(0, 0, W, H);
-      const isDark = dark();
-      const lineRGB = isDark ? "181,221,60" : "45,112,142";
+      const lineRGB = "45,104,142";
 
       // network
       for (const n of nodes) {
@@ -167,7 +165,7 @@ export function NeuralHero({
           const b = nodes[j]!;
           const d = Math.hypot(a.x - b.x, a.y - b.y);
           if (d < LINK) {
-            ctx.strokeStyle = `rgba(${lineRGB},${(1 - d / LINK) * (isDark ? 0.16 : 0.2)})`;
+            ctx.strokeStyle = `rgba(${lineRGB},${(1 - d / LINK) * 0.2})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
@@ -183,7 +181,7 @@ export function NeuralHero({
           ctx.lineTo(mouse.x, mouse.y);
           ctx.stroke();
         }
-        ctx.fillStyle = `rgba(${lineRGB},${isDark ? 0.5 : 0.55})`;
+        ctx.fillStyle = `rgba(${lineRGB},0.55)`;
         ctx.beginPath();
         ctx.arc(a.x, a.y, 1.6, 0, Math.PI * 2);
         ctx.fill();
