@@ -1,514 +1,159 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
-@import "@fontsource-variable/bricolage-grotesque/index.css";
 @import "@fontsource-variable/geist/index.css";
 @import "@fontsource-variable/geist-mono/index.css";
-
-@custom-variant dark (&:is(.dark *)); /* unused: site is light-only */
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 14px);
-  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, sans-serif;
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, "SFMono-Regular", monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--background);
+  --color-card-foreground: var(--foreground);
+  --color-popover: var(--background);
+  --color-popover-foreground: var(--foreground);
+  --color-primary: var(--accent);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--subtle);
+  --color-secondary-foreground: var(--foreground);
+  --color-muted: var(--subtle);
+  --color-muted-foreground: var(--muted);
   --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-ring-offset-background: var(--background);
-  --color-surface: var(--surface);
+  --color-accent-foreground: #ffffff;
+  --color-destructive: #b42318;
+  --color-destructive-foreground: #ffffff;
+  --color-border: var(--line);
+  --color-input: var(--line);
+  --color-ring: var(--accent);
+  --color-subtle: var(--subtle);
+  --color-line: var(--line);
   --color-v1: var(--v1);
   --color-v2: var(--v2);
   --color-v3: var(--v3);
   --color-v4: var(--v4);
   --color-v5: var(--v5);
-  --color-chart-1: var(--v1);
-  --color-chart-2: var(--v2);
-  --color-chart-3: var(--v3);
-  --color-chart-4: var(--v4);
-  --color-chart-5: var(--v5);
-  --color-sidebar: var(--surface);
-  --color-sidebar-foreground: var(--foreground);
-  --color-sidebar-primary: var(--primary);
-  --color-sidebar-primary-foreground: var(--primary-foreground);
-  --color-sidebar-accent: var(--secondary);
-  --color-sidebar-accent-foreground: var(--foreground);
-  --color-sidebar-border: var(--border);
-  --color-sidebar-ring: var(--ring);
-  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* White theme. Accents are viridis — matplotlib's default colormap, the colour of every ML plot. */
 :root {
-  --radius: 0.85rem;
+  --radius: 0.6rem;
+  --background: #ffffff;
+  --foreground: #16161a;
+  --muted: #67666f;
+  --subtle: #f6f6f8;
+  --line: #ecebef;
+  --accent: #1d7f68;
+
+  /* viridis — only used inside data visuals */
   --v1: #3b1f6e;
   --v2: #2d708e;
   --v3: #22a07a;
   --v4: #8cc63f;
   --v5: #e8d33a;
-  --viridis: linear-gradient(90deg, #441a74, #2d688e 30%, #1c9270 58%, #5f9e22 80%, #b39812);
-
-  --background: #ffffff;
-  --foreground: #1a1233;
-  --surface: #ffffff;
-  --card: #ffffff;
-  --card-foreground: #1a1233;
-  --popover: #ffffff;
-  --popover-foreground: #1a1233;
-  --primary: #1d7f68;
-  --primary-foreground: #ffffff;
-  --secondary: #f4f3f8;
-  --secondary-foreground: #1a1233;
-  --muted: #f4f3f8;
-  --muted-foreground: #5b5675;
-  --accent: #3b1f6e;
-  --accent-foreground: #ffffff;
-  --destructive: #c2410c;
-  --destructive-foreground: #ffffff;
-  --border: #e6e3ef;
-  --input: #d3cee4;
-  --ring: #2d708e;
-  --grid-line: rgb(26 18 51 / 6%);
-  --shadow-lift: 0 1px 2px rgb(26 18 51 / 6%), 0 24px 50px -28px rgb(59 31 110 / 35%);
 }
 
-/* ── Utilities ───────────────────────────────────────────────────────── */
+/* ── Motion ──────────────────────────────────────────────────────────── */
 
-@utility grid-bg {
-  background-image:
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
-
-@utility text-viridis {
-  background: var(--viridis);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: viridisFlow 9s ease-in-out infinite alternate;
-}
-
-@utility bg-viridis {
-  background: var(--viridis);
-}
-
-@utility tile {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-lift);
-}
-
-@utility btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  border-radius: 999px;
-  padding: 0.8rem 1.4rem;
-  font-weight: 600;
-  font-size: 0.925rem;
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-  transition:
-    transform 0.35s var(--ease-spring),
-    background-color 0.3s ease,
-    color 0.3s ease,
-    border-color 0.3s ease;
-  &:active {
-    transform: scale(0.97);
-  }
-}
-
-@utility btn-solid {
-  background: var(--primary);
-  color: var(--primary-foreground);
-  /* liquid fill on hover */
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: var(--foreground);
-    transform: translateY(101%);
-    border-radius: 50% 50% 0 0 / 30% 30% 0 0;
-    transition:
-      transform 0.55s var(--ease-out-expo),
-      border-radius 0.55s var(--ease-out-expo);
-  }
-  &:hover {
-    color: var(--background);
-  }
-  &:hover::before {
-    transform: translateY(0);
-    border-radius: 0;
-  }
-}
-
-@utility btn-line {
-  border: 1px solid var(--border);
-  color: var(--foreground);
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: var(--secondary);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.5s var(--ease-out-expo);
-  }
-  &:hover {
-    border-color: color-mix(in oklab, var(--primary) 50%, var(--border));
-  }
-  &:hover::before {
-    transform: scaleX(1);
-  }
-}
-
-@utility link-u {
-  background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat;
-  transition: background-size 0.45s var(--ease-out-expo);
-  &:hover {
-    background-size: 100% 1px;
-  }
-}
-
-/* ── Keyframes ───────────────────────────────────────────────────────── */
-
-@keyframes viridisFlow {
-  from {
-    background-position: 0% 50%;
-  }
-  to {
-    background-position: 100% 50%;
-  }
-}
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(0.9em);
-    filter: blur(8px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
     transform: none;
-    filter: none;
   }
 }
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
+
+/* one orchestrated load sequence */
+.enter {
+  animation: rise 0.9s var(--ease-out-expo) both;
+  animation-delay: var(--d, 0ms);
+}
+
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.8s var(--ease-out-expo),
+    transform 0.8s var(--ease-out-expo);
+  transition-delay: var(--d, 0ms);
+}
+.js [data-reveal][data-in="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+.js .heat-cell {
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s var(--ease-out-expo);
+  transition-delay: var(--d, 0ms);
+}
+.js [data-in="true"] .heat-cell {
+  opacity: 1;
+  transform: none;
+}
+
+/* expanding project rows */
+.expand {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s var(--ease-out-expo);
+}
+.expand[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+.expand > div {
+  overflow: hidden;
+  min-height: 0;
+}
+.expand-inner {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.5s var(--ease-out-expo);
+}
+.expand[data-open="true"] .expand-inner {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.12s;
+}
+
+.live-dot {
+  animation: pulse 2.4s ease-in-out infinite;
 }
 @keyframes pulse {
   0%,
   100% {
     opacity: 1;
-    transform: scale(1);
   }
   50% {
-    opacity: 0.4;
-    transform: scale(0.7);
-  }
-}
-@keyframes scan {
-  0% {
-    transform: translateY(-10%);
-    opacity: 0;
-  }
-  10%,
-  90% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(1000%);
-    opacity: 0;
-  }
-}
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes floaty {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-@keyframes cueDrop {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(200%);
+    opacity: 0.35;
   }
 }
 
-/* ── Preloader: a pretend training run ───────────────────────────────── */
-
-@keyframes preloaderOut {
-  to {
-    clip-path: inset(0 0 100% 0);
-    visibility: hidden;
-  }
-}
-.preloader {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: grid;
-  place-items: center;
-  background: var(--background);
-  clip-path: inset(0 0 0 0);
-  /* Exits on its own even if JavaScript never runs */
-  animation: preloaderOut 0.9s var(--ease-out-expo) 2.1s forwards;
-}
-.preloader-curve {
-  stroke-dasharray: 600;
-  stroke-dashoffset: 600;
-  animation: drawCurve 1.8s var(--ease-out-expo) 0.15s forwards;
-}
-@keyframes drawCurve {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-html.seen .preloader {
-  display: none;
-}
-
-/* Page content enters after the preloader */
-.enter {
-  animation: rise 1s var(--ease-out-expo) both;
-  animation-delay: calc(var(--d, 0ms) + var(--boot, 2300ms));
-}
-html.seen {
-  --boot: 150ms;
-}
-
-/* ── Components ──────────────────────────────────────────────────────── */
-
-.marquee-track {
-  animation: marquee var(--marquee-speed, 30s) linear infinite;
-}
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
-}
-.marquee {
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-}
-
-.live-dot {
-  animation: pulse 2.2s ease-in-out infinite;
-}
-
-.scanline {
-  animation: scan 3.2s linear infinite;
-}
-
-.floaty {
-  animation: floaty 6s ease-in-out infinite;
-}
-
-.scroll-cue::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--primary);
-  animation: cueDrop 1.8s var(--ease-out-expo) infinite;
-}
-
-/* reveal-on-view: elements opt in with data-reveal */
-.js [data-reveal] {
-  opacity: 0;
-  transform: translateY(28px);
+/* underline that draws in on hover */
+@utility link {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat;
   transition:
-    opacity 0.9s var(--ease-out-expo),
-    transform 0.9s var(--ease-out-expo),
-    clip-path 1.1s var(--ease-out-expo);
-  transition-delay: var(--d, 0ms);
-}
-.js [data-reveal="clip"] {
-  opacity: 1;
-  transform: none;
-  clip-path: inset(0 0 100% 0);
-}
-.js [data-reveal="left"] {
-  transform: translateX(-40px);
-}
-.js [data-reveal="scale"] {
-  transform: scale(0.92);
-}
-.js [data-reveal][data-in="true"] {
-  opacity: 1;
-  transform: none;
-  clip-path: inset(0 0 0 0);
-}
-
-/* heatmap cells light up one after another */
-.js .heat-cell {
-  transform: scale(0.3);
-  opacity: 0;
-  transition:
-    transform 0.6s var(--ease-spring),
-    opacity 0.6s ease;
-  transition-delay: var(--d, 0ms);
-}
-.js [data-in="true"] .heat-cell {
-  transform: scale(1);
-  opacity: 1;
-}
-
-/* detection box draws its corners */
-.js .detect-corner {
-  transform: scale(0);
-  transition: transform 0.7s var(--ease-spring);
-  transition-delay: var(--d, 0ms);
-}
-.js [data-in="true"] .detect-corner {
-  transform: scale(1);
-}
-.detect-box {
-  inset: 9% 14% 4% 16%;
-}
-.js .detect-box {
-  inset: 18%;
-  opacity: 0;
-  transition:
-    inset 1.2s var(--ease-out-expo) 0.3s,
-    opacity 0.4s ease 0.3s;
-}
-.js [data-in="true"] .detect-box {
-  inset: 9% 14% 4% 16%;
-  opacity: 1;
-}
-
-/* tilt card */
-.tilt {
-  --rx: 0deg;
-  --ry: 0deg;
-  --gx: 50%;
-  --gy: 50%;
-  transform: perspective(1200px) rotateX(var(--rx)) rotateY(var(--ry));
-  transition: transform 0.6s var(--ease-spring);
-}
-.tilt-glare {
-  background: radial-gradient(
-    500px circle at var(--gx) var(--gy),
-    color-mix(in oklab, var(--v4) 16%, transparent),
-    transparent 45%
-  );
-}
-
-.magnetic {
-  transition: transform 0.4s var(--ease-spring);
-}
-
-/* ── Base ────────────────────────────────────────────────────────────── */
-
-@layer base {
-  * {
-    border-color: var(--color-border);
-  }
-  html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 5.5rem;
-  }
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-    font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    transition:
-      background-color 0.5s ease,
-      color 0.5s ease;
-  }
-  h1,
-  h2,
-  h3 {
-    font-family: var(--font-display);
-    letter-spacing: -0.03em;
-    font-variation-settings: "wdth" 100;
-  }
-  :focus-visible {
-    outline: 2px solid var(--ring);
-    outline-offset: 3px;
-    border-radius: 6px;
-  }
-  ::selection {
-    background: color-mix(in oklab, var(--v4) 45%, transparent);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.001ms !important;
-      animation-delay: 0ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.001ms !important;
-      transition-delay: 0ms !important;
-    }
-    .preloader {
-      display: none !important;
-    }
-    [data-reveal],
-    .heat-cell,
-    .detect-corner {
-      opacity: 1 !important;
-      transform: none !important;
-      clip-path: none !important;
-    }
-    .detect-box {
-      inset: 9% 14% 4% 16% !important;
-      opacity: 1 !important;
-    }
-    .tilt {
-      transform: none !important;
-    }
+    background-size 0.4s var(--ease-out-expo),
+    color 0.2s ease;
+  &:hover {
+    background-size: 100% 1px;
   }
 }
 
-/* Particle hero hands the name over to the canvas once it's drawn */
-.neural-hero[data-particles-ready] [data-particles] {
-  color: transparent;
-  background: none;
-  transition: color 0.6s ease;
-}
+/* ── Project illustrations (loop only while a row is open) ──────────── */
 
-/* ── Project illustrations ───────────────────────────────────────────── */
 .pv-draw {
   stroke-dasharray: 520;
   animation: pvDraw 5s var(--ease-out-expo) infinite;
@@ -613,15 +258,82 @@ html.seen {
   }
 }
 .pv-bob {
-  animation: floaty 3.4s ease-in-out infinite;
+  animation: bob 3.4s ease-in-out infinite;
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 .pv-spin {
   animation: spin 10s linear infinite;
 }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.expand:not([data-open="true"]) .pv * {
+  animation-play-state: paused;
+}
 
-/* theme switch: let the JS-driven circle reveal replace the default crossfade */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
+/* ── Base ────────────────────────────────────────────────────────────── */
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--accent) 20%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-delay: 0ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      transition-delay: 0ms !important;
+    }
+    .js [data-reveal],
+    .js .heat-cell {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
 }
