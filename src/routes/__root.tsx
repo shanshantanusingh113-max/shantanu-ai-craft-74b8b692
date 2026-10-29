@@ -84,7 +84,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: SITE.name },
       { name: "keywords", content: SITE.keywords },
       { name: "robots", content: "index, follow, max-image-preview:large" },
-      { name: "theme-color", content: "#12131c" },
+      { name: "theme-color", content: "#120c24" },
       { name: "color-scheme", content: "dark light" },
       { name: "format-detection", content: "telephone=no" },
     ],
@@ -93,21 +93,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
-      },
       { rel: "icon", href: "/favicon.ico", sizes: "any" },
       { rel: "icon", href: "/icon.svg", type: "image/svg+xml" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       { rel: "manifest", href: "/site.webmanifest" },
     ],
     scripts: [
-      // Apply saved theme before paint — no light/dark flash on load.
+      // Before paint: apply saved theme (no flash), flag JS for reveal animations,
+      // and only play the intro animation once per browser session.
       {
-        children: `(function(){try{var t=localStorage.getItem("theme");if(!t)t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";if(t==="dark")document.documentElement.classList.add("dark")}catch(e){document.documentElement.classList.add("dark")}})()`,
+        children: `(function(){var d=document.documentElement;d.classList.add("js");try{var t=localStorage.getItem("theme");if(!t)t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";if(t==="dark")d.classList.add("dark");if(sessionStorage.getItem("booted"))d.classList.add("seen");else sessionStorage.setItem("booted","1")}catch(e){d.classList.add("dark")}})()`,
       },
       { type: "application/ld+json", children: JSON.stringify(jsonLd()) },
     ],

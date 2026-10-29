@@ -1,19 +1,59 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { useInView } from "./Reveal";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ElementType,
+  type ReactNode,
+  type RefObject,
+} from "react";
 
-const reduced = () =>
+export const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/** Thin gradient bar at the top of the page that tracks scroll position. */
-export function ScrollProgress() {
-  const ref = useRef<HTMLDivElement>(null);
+const finePointer = () =>
+  typeof window !== "undefined" && window.matchMedia("(pointer: fine)").matches;
+
+/** True once the element has scrolled into view (fires once). */
+export function useInView<T extends Element>(threshold = 0.15) {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === "undefined") return setInView(true);
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e?.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { threshold, rootMargin: "0px 0px -6% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [threshold]);
+  return [ref, inView] as const;
+}
+
+/** 0 → 1 progress of an element travelling through the viewport. */
+export function useScrollProgress(
+  ref: RefObject<HTMLElement | null>,
+  mode: "through" | "pinned" = "through",
+) {
+  const [p, setP] = useState(0);
   useEffect(() => {
     let raf = 0;
     const update = () => {
       raf = 0;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      const p = max > 0 ? window.scrollY / max : 0;
-      if (ref.current) ref.current.style.transform = `scaleX(${p})`;
+      const el = ref.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const v =
+        mode === "pinned" ? -r.top / Math.max(1, r.height - vh) : (vh - r.top) / (vh + r.height);
+      setP(Math.min(1, Math.max(0, v)));
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
@@ -26,91 +66,114 @@ export function ScrollProgress() {
       window.removeEventListener("resize", onScroll);
       cancelAnimationFrame(raf);
     };
+  }, [ref, mode]);
+  return p;
+}
+
+/** Wrapper that sets data-in="true" on view; children animate via CSS. */
+export function InView({
+  as: Tag = "div",
+  children,
+  className = "",
+  reveal,
+  delay = 0,
+  threshold,
+  style,
+  id,
+}: {
+  as?: ElementType;
+  children?: ReactNode;
+  className?: string;
+  reveal?: "up" | "clip" | "left" | "scale";
+  delay?: number;
+  threshold?: number;
+  style?: CSSProperties;
+  id?: string;
+}) {
+  const [ref, inView] = useInView<HTMLElement>(threshold);
+  return (
+    <Tag
+      ref={ref}
+      id={id}
+      className={className}
+      data-in={inView}
+      data-reveal={reveal === undefined ? undefined : reveal === "up" ? "" : reveal}
+      style={{ ...style, ["--d" as string]: `${delay}ms` }}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+/** Gradient bar along the top edge tracking page scroll. */
+export function ScrollProgress() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (ref.current)
+        ref.current.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
+    };
+    const on = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", on, { passive: true });
+    window.addEventListener("resize", on);
+    return () => {
+      window.removeEventListener("scroll", on);
+      window.removeEventListener("resize", on);
+    };
   }, []);
   return (
-    <div aria-hidden className="fixed inset-x-0 top-0 z-[60] h-[3px]">
-      <div
-        ref={ref}
-        className="h-full origin-left bg-[linear-gradient(90deg,var(--neon),var(--neon-2))]"
-        style={{ transform: "scaleX(0)" }}
-      />
+    <div aria-hidden className="fixed inset-x-0 top-0 z-[70] h-[3px]">
+      <div ref={ref} className="bg-viridis h-full origin-left" style={{ transform: "scaleX(0)" }} />
     </div>
   );
 }
 
-/** Letter-by-letter rise animation. Screen readers get the plain text. */
-export function SplitText({
-  text,
+/** Element drifts toward the cursor while hovered. */
+export function Magnetic({
+  children,
+  strength = 0.3,
   className = "",
-  delay = 0,
-  stagger = 38,
 }: {
-  text: string;
+  children: ReactNode;
+  strength?: number;
   className?: string;
-  delay?: number;
-  stagger?: number;
 }) {
-  return (
-    <span className={className}>
-      <span className="sr-only">{text}</span>
-      {Array.from(text).map((ch, i) => (
-        <span
-          key={i}
-          aria-hidden
-          className="split-char"
-          style={{ animationDelay: `${delay + i * stagger}ms` }}
-        >
-          {ch === " " ? " " : ch}
-        </span>
-      ))}
-    </span>
-  );
-}
-
-/** Counts up from 0 when scrolled into view. */
-export function Counter({
-  from = 0,
-  to,
-  suffix = "",
-  duration = 1400,
-}: {
-  from?: number;
-  to: number;
-  suffix?: string;
-  duration?: number;
-}) {
-  const [ref, visible] = useInView<HTMLSpanElement>(0.2);
-  const [n, setN] = useState(from);
+  const ref = useRef<HTMLSpanElement>(null);
   useEffect(() => {
-    if (!visible) return;
-    if (reduced()) {
-      setN(to);
-      return;
-    }
-    let raf = 0;
-    const start = performance.now();
-    const tick = (t: number) => {
-      const p = Math.min(1, (t - start) / duration);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setN(Math.round(from + (to - from) * eased));
-      if (p < 1) raf = requestAnimationFrame(tick);
+    const el = ref.current;
+    if (!el || prefersReducedMotion() || !finePointer()) return;
+    const move = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect();
+      el.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * strength}px, ${
+        (e.clientY - r.top - r.height / 2) * strength
+      }px)`;
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [visible, from, to, duration]);
+    const leave = () => (el.style.transform = "");
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerleave", leave);
+    return () => {
+      el.removeEventListener("pointermove", move);
+      el.removeEventListener("pointerleave", leave);
+    };
+  }, [strength]);
   return (
-    <span ref={ref} className="tabular-nums">
-      {n}
-      {suffix}
+    <span ref={ref} className={`magnetic inline-block ${className}`}>
+      {children}
     </span>
   );
 }
 
-/** Subtle 3D tilt that follows the pointer (desktop only), with a moving glare. */
+/** Pointer-following 3D tilt with a soft glare. */
 export function Tilt({
   children,
   className = "",
-  max = 7,
+  max = 6,
 }: {
   children: ReactNode;
   className?: string;
@@ -119,91 +182,135 @@ export function Tilt({
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = ref.current;
-    if (!el || reduced() || !window.matchMedia("(pointer: fine)").matches) return;
-    let raf = 0;
-    const onMove = (e: PointerEvent) => {
+    if (!el || prefersReducedMotion() || !finePointer()) return;
+    const move = (e: PointerEvent) => {
       const r = el.getBoundingClientRect();
       const x = (e.clientX - r.left) / r.width;
       const y = (e.clientY - r.top) / r.height;
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        el.style.setProperty("--rx", `${(0.5 - y) * max}deg`);
-        el.style.setProperty("--ry", `${(x - 0.5) * max}deg`);
-        el.style.setProperty("--gx", `${x * 100}%`);
-        el.style.setProperty("--gy", `${y * 100}%`);
-      });
+      el.style.setProperty("--rx", `${(0.5 - y) * max}deg`);
+      el.style.setProperty("--ry", `${(x - 0.5) * max}deg`);
+      el.style.setProperty("--gx", `${x * 100}%`);
+      el.style.setProperty("--gy", `${y * 100}%`);
     };
-    const onLeave = () => {
-      cancelAnimationFrame(raf);
+    const leave = () => {
       el.style.setProperty("--rx", "0deg");
       el.style.setProperty("--ry", "0deg");
     };
-    el.addEventListener("pointermove", onMove);
-    el.addEventListener("pointerleave", onLeave);
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerleave", leave);
     return () => {
-      el.removeEventListener("pointermove", onMove);
-      el.removeEventListener("pointerleave", onLeave);
-      cancelAnimationFrame(raf);
+      el.removeEventListener("pointermove", move);
+      el.removeEventListener("pointerleave", leave);
     };
   }, [max]);
   return (
-    <div ref={ref} className={`tilt ${className}`}>
+    <div ref={ref} className={`tilt group relative ${className}`}>
       {children}
-      <span aria-hidden className="tilt-glare" />
+      <span
+        aria-hidden
+        className="tilt-glare pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+      />
     </div>
   );
 }
 
-/** Element drifts slightly toward the cursor — used on the main CTA. */
-export function Magnetic({
-  children,
-  strength = 0.25,
+const GLYPHS = "01<>/{}[]=+*#%&$@ABCDEFGHJKLMNPQRSTUVWXYZ";
+
+/** Text that "decodes" from random glyphs when it enters view (and on hover if asked). */
+export function Scramble({
+  text,
+  className = "",
+  as: Tag = "span",
+  onHover = false,
+  duration = 900,
 }: {
-  children: ReactNode;
-  strength?: number;
+  text: string;
+  className?: string;
+  as?: ElementType;
+  onHover?: boolean;
+  duration?: number;
 }) {
-  const ref = useRef<HTMLSpanElement>(null);
+  const [ref, inView] = useInView<HTMLElement>(0.3);
+  const [out, setOut] = useState(text);
+  const raf = useRef(0);
+
+  const run = () => {
+    if (prefersReducedMotion()) return;
+    cancelAnimationFrame(raf.current);
+    const start = performance.now();
+    const tick = (t: number) => {
+      const p = Math.min(1, (t - start) / duration);
+      const settled = Math.floor(p * text.length);
+      let s = "";
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i]!;
+        s += i < settled || ch === " " ? ch : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+      }
+      setOut(s);
+      if (p < 1) raf.current = requestAnimationFrame(tick);
+    };
+    raf.current = requestAnimationFrame(tick);
+  };
+
   useEffect(() => {
-    const el = ref.current;
-    if (!el || reduced() || !window.matchMedia("(pointer: fine)").matches) return;
-    const onMove = (e: PointerEvent) => {
-      const r = el.getBoundingClientRect();
-      const dx = e.clientX - (r.left + r.width / 2);
-      const dy = e.clientY - (r.top + r.height / 2);
-      el.style.transform = `translate(${dx * strength}px, ${dy * strength}px)`;
-    };
-    const onLeave = () => (el.style.transform = "");
-    el.addEventListener("pointermove", onMove);
-    el.addEventListener("pointerleave", onLeave);
-    return () => {
-      el.removeEventListener("pointermove", onMove);
-      el.removeEventListener("pointerleave", onLeave);
-    };
-  }, [strength]);
+    if (inView) run();
+    return () => cancelAnimationFrame(raf.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, text]);
+
   return (
-    <span ref={ref} className="magnetic inline-block">
-      {children}
-    </span>
+    <Tag ref={ref} className={className} onPointerEnter={onHover ? run : undefined}>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden>{out}</span>
+    </Tag>
   );
 }
 
-/** Infinite horizontal ticker; pauses on hover. */
-export function Marquee({ items }: { items: string[] }) {
-  const row = [...items, ...items];
+/** Paragraph whose words light up as you scroll past it. */
+export function ScrubText({ text, className = "" }: { text: string; className?: string }) {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const p = useScrollProgress(ref);
+  const [still, setStill] = useState(false);
+  useEffect(() => setStill(prefersReducedMotion()), []);
+  const words = text.split(" ");
+  const lit = Math.min(1, Math.max(0, (p - 0.12) / 0.42)) * words.length;
   return (
-    <div
-      className="marquee-mask relative overflow-hidden py-1"
-      aria-label={`Tech stack: ${items.join(", ")}`}
-    >
-      <div className="marquee-track flex w-max gap-3" aria-hidden>
-        {row.map((t, i) => (
-          <span
-            key={i}
-            className="glass whitespace-nowrap rounded-full px-4 py-2 font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground"
-          >
-            {t}
-          </span>
-        ))}
+    <p ref={ref} className={className}>
+      <span className="sr-only">{text}</span>
+      {words.map((w, i) => (
+        <span
+          key={i}
+          aria-hidden
+          className="transition-opacity duration-300"
+          style={{ opacity: still || i < lit ? 1 : 0.16 }}
+        >
+          {w}{" "}
+        </span>
+      ))}
+    </p>
+  );
+}
+
+/** Infinite horizontal ticker. */
+export function Marquee({
+  children,
+  speed = 30,
+  className = "",
+}: {
+  children: ReactNode;
+  speed?: number;
+  className?: string;
+}) {
+  return (
+    <div className={`marquee overflow-hidden ${className}`}>
+      <div
+        className="marquee-track flex w-max"
+        style={{ ["--marquee-speed" as string]: `${speed}s` }}
+      >
+        <div className="flex shrink-0">{children}</div>
+        <div className="flex shrink-0" aria-hidden>
+          {children}
+        </div>
       </div>
     </div>
   );
