@@ -9,7 +9,7 @@ const LINKS = [
   ["Skills", "#skills"],
   ["Experience", "#experience"],
   ["Services", "#services"],
-  ["Portfolio", "#portfolio"],
+  ["Projects", "#portfolio"],
   ["Contact", "#contact"],
 ] as const;
 
@@ -113,9 +113,7 @@ export function Nav() {
                       : "text-muted-foreground hover:bg-secondary hover:text-foreground"
                   } ${open ? "translate-y-0 opacity-100" : "-translate-y-1 opacity-0"}`}
                 >
-                  <span className="font-mono text-[10px] text-muted-foreground">
-                    0{i + 1}
-                  </span>
+                  <span className="font-mono text-[10px] text-muted-foreground">0{i + 1}</span>
                   {label}
                 </a>
               </li>

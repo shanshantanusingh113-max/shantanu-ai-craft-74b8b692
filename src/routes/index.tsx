@@ -24,6 +24,12 @@ import {
   Target,
   Terminal,
   Twitter,
+  Zap,
+  Layers,
+  Search,
+  Accessibility,
+  ExternalLink,
+  Star,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Nav } from "@/components/portfolio/Nav";
@@ -34,26 +40,48 @@ import { SectionHeading } from "@/components/portfolio/SectionHeading";
 import { Typewriter } from "@/components/portfolio/Typewriter";
 import profile from "@/assets/shantanu.jpg";
 import resumeAsset from "@/assets/resume.pdf.asset.json";
-
-const TITLE = "Shantanu Singh — AI & ML Student, Python & C++ Developer";
-const DESC =
-  "Portfolio of Shantanu Singh, second-year B.Tech CSE (AI & ML) student at JSS University — Python, C++, machine learning, DSA and UI/UX.";
+import {
+  Counter,
+  Magnetic,
+  Marquee,
+  ScrollProgress,
+  SplitText,
+  Tilt,
+} from "@/components/portfolio/Motion";
+import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: TITLE },
-      { name: "description", content: DESC },
-      { property: "og:title", content: TITLE },
-      { property: "og:description", content: DESC },
-      { property: "og:type", content: "website" },
+      { title: SITE.title },
+      { name: "description", content: SITE.description },
+      // Open Graph (LinkedIn, WhatsApp, Facebook previews)
+      { property: "og:type", content: "profile" },
+      { property: "og:site_name", content: `${SITE.name} — Portfolio` },
+      { property: "og:locale", content: SITE.locale },
+      { property: "og:url", content: `${SITE.url}/` },
+      { property: "og:title", content: SITE.title },
+      { property: "og:description", content: SITE.description },
+      { property: "og:image", content: SITE.ogImage },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Shantanu Singh — AI & ML Student portfolio" },
+      { property: "profile:first_name", content: "Shantanu" },
+      { property: "profile:last_name", content: "Singh" },
+      // X / Twitter
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: SITE.twitter },
+      { name: "twitter:creator", content: SITE.twitter },
+      { name: "twitter:title", content: SITE.title },
+      { name: "twitter:description", content: SITE.description },
+      { name: "twitter:image", content: SITE.ogImage },
     ],
+    links: [{ rel: "canonical", href: `${SITE.url}/` }],
   }),
   component: Index,
 });
 
-const EMAIL = "shantanusingh6362@gmail.com";
+const EMAIL = SITE.email;
 
 const SOCIALS = [
   {
@@ -129,43 +157,72 @@ const SERVICES = [
   },
 ];
 
-const PROJECTS = [
-  {
-    n: "01",
-    category: "Python",
-    title: "Python Utility Project",
-    body: "A practical command-line tool exploring clean code structure, file handling and automation.",
-    tags: ["Python", "CLI", "Automation"],
-    Icon: Terminal,
-    status: "In development",
-  },
-  {
-    n: "02",
-    category: "Machine Learning",
-    title: "ML Experiment",
-    body: "An end-to-end classical ML notebook: dataset exploration, feature work, model training and evaluation.",
-    tags: ["Python", "scikit-learn", "Pandas"],
-    Icon: BrainCircuit,
-    status: "Planned",
-  },
-  {
-    n: "03",
-    category: "Design",
-    title: "UI/UX Case Study",
-    body: "A full interface redesign case study covering research, wireframes, design system and final screens.",
-    tags: ["Figma", "Design System", "Research"],
-    Icon: Palette,
-    status: "Planned",
-  },
+const FEATURED = {
+  title: "AI Craft Portfolio",
+  tagline: "A fast, animated, SEO-ready personal site — the one you're on right now.",
+  body: "Designed and shipped end-to-end: a server-rendered React app with a glassmorphism design system, light/dark theming without flash, scroll-driven motion that respects reduced-motion settings, and structured data so search engines understand who I am.",
+  highlights: [
+    {
+      Icon: Zap,
+      t: "Server-side rendered",
+      b: "TanStack Start renders HTML on the server — fast first paint and crawlable content.",
+    },
+    {
+      Icon: Layers,
+      t: "Custom motion system",
+      b: "Scroll reveals, 3D tilt, magnetic buttons and counters with zero animation libraries.",
+    },
+    {
+      Icon: Search,
+      t: "SEO built in",
+      b: "Open Graph, Twitter cards, JSON-LD Person schema, sitemap and canonical URLs.",
+    },
+    {
+      Icon: Accessibility,
+      t: "Accessible by default",
+      b: "Semantic landmarks, keyboard focus states and full reduced-motion support.",
+    },
+  ],
+  stack: ["React 19", "TypeScript", "TanStack Start", "Tailwind CSS v4", "Vite", "Netlify"],
+  repo: SITE.repo,
+  live: SITE.url,
+};
+
+const STACK = [
+  "Python",
+  "C++",
+  "Machine Learning",
+  "DSA",
+  "Git",
+  "React",
+  "TypeScript",
+  "Tailwind CSS",
+  "UI/UX",
+  "Figma",
 ];
 
 const BUILDING = [
-  { t: "Academic projects", b: "Coursework built beyond requirements — with real structure and documentation." },
-  { t: "Personal projects", b: "Self-directed Python and ML builds to turn theory into working software." },
+  {
+    t: "Academic projects",
+    b: "Coursework built beyond requirements — with real structure and documentation.",
+  },
+  {
+    t: "Personal projects",
+    b: "Self-directed Python and ML builds to turn theory into working software.",
+  },
   { t: "AI/ML learning", b: "Model fundamentals, math intuition and practical experimentation." },
-  { t: "DSA & problem solving", b: "Consistent practice on data structures, algorithms and contest-style problems." },
-  { t: "Internship preparation", b: "Portfolio, resume, interview fundamentals and technical communication." },
-  { t: "Community & open source", b: "Learning in public, reading code and contributing where I can help." },
+  {
+    t: "DSA & problem solving",
+    b: "Consistent practice on data structures, algorithms and contest-style problems.",
+  },
+  {
+    t: "Internship preparation",
+    b: "Portfolio, resume, interview fundamentals and technical communication.",
+  },
+  {
+    t: "Community & open source",
+    b: "Learning in public, reading code and contributing where I can help.",
+  },
 ];
 
 function Proficiency({ level }: { level: number }) {
@@ -173,12 +230,14 @@ function Proficiency({ level }: { level: number }) {
     <div className="flex items-center gap-2">
       <div className="flex gap-1" role="img" aria-label={`${LEVELS[level - 1]} level`}>
         {[1, 2, 3, 4].map((i) => (
-          <span
-            key={i}
-            className={`h-1.5 w-6 rounded-full transition-colors duration-500 ${
-              i <= level ? "bg-primary" : "bg-secondary"
-            }`}
-          />
+          <span key={i} className="h-1.5 w-6 overflow-hidden rounded-full bg-secondary">
+            {i <= level && (
+              <span
+                className="bar-seg block h-full w-full rounded-full bg-gradient-to-r from-primary to-accent"
+                style={{ transitionDelay: `${300 + i * 140}ms` }}
+              />
+            )}
+          </span>
         ))}
       </div>
       <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
@@ -220,9 +279,9 @@ function Index() {
     const name = String(fd.get("name") ?? "").trim();
     const email = String(fd.get("email") ?? "").trim();
     const message = String(fd.get("message") ?? "").trim();
-    if (name.length < 2) next['name'] = "Please enter your name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next['email'] = "Enter a valid email address.";
-    if (message.length < 10) next['message'] = "A little more detail would help (10+ characters).";
+    if (name.length < 2) next["name"] = "Please enter your name.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next["email"] = "Enter a valid email address.";
+    if (message.length < 10) next["message"] = "A little more detail would help (10+ characters).";
     setErrors(next);
     if (Object.keys(next).length) {
       toast.error("Please fix the highlighted fields.");
@@ -239,6 +298,7 @@ function Index() {
 
   return (
     <div className="relative min-h-screen overflow-x-hidden">
+      <ScrollProgress />
       <Backdrop />
       <Cursor />
       <Nav />
@@ -256,11 +316,14 @@ function Index() {
                 Available for internships &amp; collaborations
               </span>
 
-              <h1
-                className="animate-fade-up mt-6 text-[2.6rem] font-bold leading-[1.05] sm:text-6xl lg:text-[4.2rem]"
-                style={{ animationDelay: "140ms" }}
-              >
-                Shantanu <span className="text-gradient">Singh</span>
+              <h1 className="mt-6 text-[2.6rem] font-bold leading-[1.05] sm:text-6xl lg:text-[4.2rem]">
+                <SplitText text="Shantanu" delay={140} />{" "}
+                <span
+                  className="split-char text-gradient"
+                  style={{ animationDelay: `${140 + 9 * 38}ms` }}
+                >
+                  Singh
+                </span>
               </h1>
 
               <p
@@ -290,23 +353,25 @@ function Index() {
                 className="animate-fade-up mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base"
                 style={{ animationDelay: "360ms" }}
               >
-                Second-year B.Tech undergraduate in Computer Science &amp; Engineering (AI &amp; ML) at
-                JSS University. I enjoy turning ideas into working software through code and careful
-                problem-solving — currently deepening Python and C++ while exploring machine learning
-                and modern product engineering.
+                Second-year B.Tech undergraduate in Computer Science &amp; Engineering (AI &amp; ML)
+                at JSS University. I enjoy turning ideas into working software through code and
+                careful problem-solving — currently deepening Python and C++ while exploring machine
+                learning and modern product engineering.
               </p>
 
               <div
                 className="animate-fade-up mt-9 flex flex-wrap items-center gap-3"
                 style={{ animationDelay: "430ms" }}
               >
-                <a
-                  href="#portfolio"
-                  className="btn-primary group inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold"
-                >
-                  View My Work
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </a>
+                <Magnetic>
+                  <a
+                    href="#portfolio"
+                    className="btn-primary btn-shine group inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold"
+                  >
+                    View My Work
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </a>
+                </Magnetic>
                 <a
                   href="#contact"
                   className="btn-ghost inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold"
@@ -354,14 +419,20 @@ function Index() {
                 aria-hidden
                 className="absolute inset-6 -z-10 rounded-full bg-primary/20 blur-3xl dark:bg-primary/25"
               />
-              <div className="animate-float panel gradient-border overflow-hidden rounded-[2rem] p-2.5">
+              <div className="animate-float panel gradient-border relative overflow-hidden rounded-[2rem] p-2.5">
+                <span
+                  aria-hidden
+                  className="orbit-ring pointer-events-none absolute -inset-1/2 opacity-50"
+                />
                 <img
+                  fetchPriority="high"
+                  decoding="async"
                   src={profile}
                   alt="Portrait of Shantanu Singh"
                   width={722}
                   height={714}
                   loading="eager"
-                  className="aspect-square w-full rounded-[1.6rem] object-cover"
+                  className="relative aspect-square w-full rounded-[1.6rem] object-cover"
                 />
               </div>
 
@@ -391,9 +462,35 @@ function Index() {
             </div>
           </div>
 
+          {/* Stats */}
+          <div
+            className="animate-fade-up mt-16 grid grid-cols-2 gap-3 sm:grid-cols-4"
+            style={{ animationDelay: "720ms" }}
+          >
+            {[
+              { n: 2, s: "", l: "Core languages" },
+              { n: 7, s: "", l: "Skills in practice" },
+              { n: 1, s: "", l: "Shipped project" },
+              { n: 2029, from: 2020, s: "", l: "Graduating" },
+            ].map((x) => (
+              <div key={x.l} className="panel panel-hover rounded-2xl px-5 py-4">
+                <p className="font-display text-2xl font-bold sm:text-3xl">
+                  <span className="text-gradient">
+                    <Counter from={"from" in x ? x.from : 0} to={x.n} suffix={x.s} />
+                  </span>
+                </p>
+                <p className="mono-label mt-1">{x.l}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="animate-fade-up mt-10" style={{ animationDelay: "820ms" }}>
+            <Marquee items={STACK} />
+          </div>
+
           <a
             href="#about"
-            className="mt-16 hidden flex-col items-center gap-2 text-muted-foreground transition-colors hover:text-primary sm:flex"
+            className="mt-12 hidden flex-col items-center gap-2 text-muted-foreground transition-colors hover:text-primary sm:flex"
             aria-label="Scroll to about section"
           >
             <span className="mono-label">Scroll</span>
@@ -411,7 +508,7 @@ function Index() {
           />
 
           <div className="grid gap-5 lg:grid-cols-3">
-            <Reveal className="lg:col-span-2">
+            <Reveal variant="left" className="lg:col-span-2">
               <div className="panel panel-hover h-full rounded-3xl p-7 sm:p-8">
                 <p className="text-sm leading-relaxed text-muted-foreground sm:text-[0.95rem]">
                   I&apos;m a Computer Science student who enjoys learning emerging technologies and
@@ -421,8 +518,8 @@ function Index() {
                   and good design solve the same problem from two directions.
                 </p>
                 <p className="mt-4 text-sm leading-relaxed text-muted-foreground sm:text-[0.95rem]">
-                  I&apos;m actively looking to collaborate with developers, mentors and teams where I
-                  can contribute, be challenged and ship work that matters.
+                  I&apos;m actively looking to collaborate with developers, mentors and teams where
+                  I can contribute, be challenged and ship work that matters.
                 </p>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -456,7 +553,7 @@ function Index() {
               </div>
             </Reveal>
 
-            <Reveal delay={120}>
+            <Reveal variant="right" delay={120}>
               <div className="panel panel-hover h-full rounded-3xl p-7">
                 <div className="flex items-center justify-between">
                   <GraduationCap className="h-7 w-7 text-primary" />
@@ -485,8 +582,8 @@ function Index() {
         {/* ── EDUCATION ───────────────────────────────────────── */}
         <section id="education" className="mx-auto max-w-4xl px-5 py-20 sm:py-24">
           <SectionHeading index="02" eyebrow="Education" title="Academic journey" />
-          <div className="relative pl-10">
-            <div className="absolute bottom-2 left-3 top-2 w-px bg-gradient-to-b from-primary/70 via-accent/50 to-transparent" />
+          <Reveal className="relative pl-10">
+            <div className="timeline-spine absolute bottom-2 left-3 top-2 w-px bg-gradient-to-b from-primary/70 via-accent/50 to-transparent" />
             {[
               {
                 Icon: GraduationCap,
@@ -505,7 +602,12 @@ function Index() {
                 tags: ["DSA", "ML", "Git", "UI/UX"],
               },
             ].map((item, i) => (
-              <Reveal key={item.title} delay={i * 140} className="relative pb-8 last:pb-0">
+              <Reveal
+                key={item.title}
+                variant="left"
+                delay={200 + i * 160}
+                className="relative pb-8 last:pb-0"
+              >
                 <span className="btn-primary absolute -left-10 grid h-7 w-7 place-items-center rounded-full">
                   <item.Icon className="h-3.5 w-3.5" />
                 </span>
@@ -527,7 +629,7 @@ function Index() {
                 </div>
               </Reveal>
             ))}
-          </div>
+          </Reveal>
         </section>
 
         {/* ── SKILLS ──────────────────────────────────────────── */}
@@ -540,7 +642,7 @@ function Index() {
           />
           <div className="grid gap-5 md:grid-cols-2">
             {SKILLS.map((group, i) => (
-              <Reveal key={group.group} delay={i * 110}>
+              <Reveal key={group.group} variant="scale" delay={i * 110}>
                 <div className="panel panel-hover h-full rounded-3xl p-7">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-semibold uppercase tracking-widest text-primary">
@@ -604,7 +706,7 @@ function Index() {
           />
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {SERVICES.map((s, i) => (
-              <Reveal key={s.name} delay={i * 90}>
+              <Reveal key={s.name} variant="scale" delay={i * 90}>
                 <div className="panel panel-hover group h-full rounded-3xl p-7">
                   <div className="flex items-start justify-between gap-3">
                     <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary transition-transform duration-300 group-hover:-translate-y-0.5">
@@ -624,56 +726,165 @@ function Index() {
           </div>
         </section>
 
-        {/* ── PORTFOLIO ───────────────────────────────────────── */}
+        {/* ── PROJECTS ────────────────────────────────────────── */}
         <section id="portfolio" className="mx-auto max-w-6xl px-5 py-20 sm:py-24">
           <SectionHeading
             index="06"
-            eyebrow="Portfolio"
-            title="Projects in the workshop"
-            sub="Real work, honestly labelled. Each of these is being built now and will land here with write-ups, code and demos."
+            eyebrow="Featured Project"
+            title="My best work, built end to end."
+            sub="One project, done properly — from design system to deployment."
           />
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {PROJECTS.map((p, i) => (
-              <Reveal key={p.title} delay={i * 110}>
-                <article className="panel panel-hover group flex h-full flex-col overflow-hidden rounded-3xl">
-                  <div className="relative h-40 overflow-hidden border-b border-border/70 bg-secondary/40">
-                    <div className="grid-bg absolute inset-0 opacity-70" />
-                    <div className="absolute inset-0 grid place-items-center">
-                      <p.Icon className="h-9 w-9 text-primary transition-transform duration-500 group-hover:scale-110" />
-                    </div>
-                    <span className="absolute left-4 top-4 font-mono text-[11px] tracking-widest text-muted-foreground">
-                      {p.n}
-                    </span>
-                    <span className="absolute right-4 top-4 mono-label">{p.category}</span>
-                    <div className="absolute inset-0 bg-primary/0 transition-colors duration-500 group-hover:bg-primary/5" />
-                  </div>
-                  <div className="flex flex-1 flex-col p-6">
-                    <h3 className="text-base font-semibold">{p.title}</h3>
-                    <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
-                      {p.body}
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {p.tags.map((t) => (
-                        <span
-                          key={t}
-                          className="rounded-full border border-border/70 px-2.5 py-1 font-mono text-[10px] tracking-wider text-muted-foreground"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="mt-6 flex items-center justify-between border-t border-border/60 pt-4">
-                      <span className="mono-label">{p.status}</span>
-                      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-primary">
-                        Coming soon
-                        <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+
+          <Reveal variant="scale">
+            <Tilt className="rounded-[2rem]">
+              <article className="panel gradient-border grid overflow-hidden rounded-[2rem] lg:grid-cols-[1.05fr_0.95fr]">
+                {/* Visual: animated browser mockup of this site */}
+                <div className="relative overflow-hidden border-b border-border/70 bg-secondary/40 p-5 sm:p-8 lg:border-b-0 lg:border-r">
+                  <div className="grid-bg absolute inset-0 opacity-70" />
+                  <div
+                    aria-hidden
+                    className="animate-blob absolute -left-10 top-10 h-56 w-56 rounded-full bg-primary/20 blur-3xl"
+                  />
+                  <div className="relative mx-auto max-w-md overflow-hidden rounded-2xl border border-border bg-background shadow-[var(--shadow-glow)]">
+                    <div className="flex items-center gap-1.5 border-b border-border/70 px-3 py-2.5">
+                      <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+                      <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+                      <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+                      <span className="ml-3 truncate rounded-md bg-secondary px-2.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+                        {FEATURED.live.replace("https://", "")}
                       </span>
                     </div>
+                    <div className="relative h-64 overflow-hidden sm:h-72" aria-hidden>
+                      <div className="screen-scroll space-y-3 p-4">
+                        <div className="flex items-center justify-between">
+                          <span className="h-2 w-14 rounded-full bg-foreground/70" />
+                          <span className="flex gap-1.5">
+                            {[0, 1, 2, 3].map((k) => (
+                              <span
+                                key={k}
+                                className="h-1.5 w-6 rounded-full bg-muted-foreground/30"
+                              />
+                            ))}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-[1fr_auto] items-center gap-4 pt-4">
+                          <div className="space-y-2">
+                            <span className="block h-1.5 w-24 rounded-full bg-primary/40" />
+                            <span className="block h-4 w-36 rounded-md bg-foreground/80" />
+                            <span className="block h-4 w-24 rounded-md bg-gradient-to-r from-primary to-accent" />
+                            <span className="block h-1.5 w-40 rounded-full bg-muted-foreground/30" />
+                            <span className="block h-1.5 w-32 rounded-full bg-muted-foreground/30" />
+                            <span className="mt-3 inline-block h-5 w-20 rounded-full bg-primary" />
+                          </div>
+                          <img
+                            src={profile}
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                            width={80}
+                            height={80}
+                            className="h-20 w-20 rounded-2xl object-cover ring-2 ring-primary/40"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 gap-2 pt-3">
+                          {[0, 1, 2, 3].map((k) => (
+                            <span
+                              key={k}
+                              className="h-10 rounded-lg border border-border bg-secondary/60"
+                            />
+                          ))}
+                        </div>
+                        <span className="block h-2.5 w-28 rounded-full bg-foreground/60 pt-2" />
+                        <div className="grid grid-cols-3 gap-2">
+                          {[0, 1, 2, 3, 4, 5].map((k) => (
+                            <span
+                              key={k}
+                              className="h-14 rounded-xl border border-border bg-secondary/50"
+                            />
+                          ))}
+                        </div>
+                        <span className="block h-2.5 w-24 rounded-full bg-foreground/60" />
+                        <div className="grid grid-cols-2 gap-2">
+                          {[0, 1].map((k) => (
+                            <span
+                              key={k}
+                              className="h-16 rounded-xl border border-border bg-secondary/50"
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </article>
-              </Reveal>
-            ))}
-          </div>
+
+                  <div className="relative mt-5 flex flex-wrap justify-center gap-2">
+                    {FEATURED.stack.map((t, i) => (
+                      <span
+                        key={t}
+                        className="glass animate-float rounded-full px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground"
+                        style={{ animationDelay: `${-i * 1.1}s` }}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Copy */}
+                <div className="relative flex flex-col p-7 sm:p-9">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-primary">
+                      <Star className="h-3 w-3 fill-current" /> Best project
+                    </span>
+                    <span className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                      <span className="animate-pulse-dot h-1.5 w-1.5 rounded-full bg-[#28c840]" />
+                      Live
+                    </span>
+                  </div>
+
+                  <h3 className="mt-5 text-2xl font-bold sm:text-3xl">{FEATURED.title}</h3>
+                  <p className="mt-2 text-sm font-medium text-primary">{FEATURED.tagline}</p>
+                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                    {FEATURED.body}
+                  </p>
+
+                  <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+                    {FEATURED.highlights.map(({ Icon, t, b }, i) => (
+                      <Reveal
+                        as="li"
+                        key={t}
+                        delay={250 + i * 110}
+                        className="group rounded-2xl border border-border/70 bg-secondary/40 p-4 transition-colors duration-300 hover:border-primary/40"
+                      >
+                        <Icon className="h-4 w-4 text-primary transition-transform duration-300 group-hover:-translate-y-0.5" />
+                        <p className="mt-2.5 text-sm font-semibold">{t}</p>
+                        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{b}</p>
+                      </Reveal>
+                    ))}
+                  </ul>
+
+                  <div className="mt-auto flex flex-wrap items-center gap-3 pt-7">
+                    <a
+                      href={FEATURED.live}
+                      target="_blank"
+                      rel="noopener"
+                      className="btn-primary btn-shine group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold"
+                    >
+                      Live site
+                      <ExternalLink className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    </a>
+                    <a
+                      href={FEATURED.repo}
+                      target="_blank"
+                      rel="noopener"
+                      className="btn-ghost inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold"
+                    >
+                      <Github className="h-4 w-4" /> Source code
+                    </a>
+                  </div>
+                </div>
+              </article>
+            </Tilt>
+          </Reveal>
         </section>
 
         {/* ── CONTACT ─────────────────────────────────────────── */}
@@ -686,7 +897,7 @@ function Index() {
           />
 
           <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-            <Reveal>
+            <Reveal variant="left">
               <div className="panel h-full rounded-3xl p-7">
                 <div className="space-y-5">
                   <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
@@ -749,7 +960,7 @@ function Index() {
               </div>
             </Reveal>
 
-            <Reveal delay={120}>
+            <Reveal variant="right" delay={120}>
               <form
                 ref={formRef}
                 onSubmit={onSubmit}
@@ -762,17 +973,26 @@ function Index() {
                       Name
                     </span>
                     <input name="name" className={field} placeholder="Your name" />
-                    {errors['name'] && (
-                      <span className="mt-1.5 block text-xs text-destructive">{errors['name']}</span>
+                    {errors["name"] && (
+                      <span className="mt-1.5 block text-xs text-destructive">
+                        {errors["name"]}
+                      </span>
                     )}
                   </label>
                   <label className="block text-sm">
                     <span className="mb-1.5 block text-xs font-medium text-muted-foreground">
                       Email
                     </span>
-                    <input name="email" type="email" className={field} placeholder="you@example.com" />
-                    {errors['email'] && (
-                      <span className="mt-1.5 block text-xs text-destructive">{errors['email']}</span>
+                    <input
+                      name="email"
+                      type="email"
+                      className={field}
+                      placeholder="you@example.com"
+                    />
+                    {errors["email"] && (
+                      <span className="mt-1.5 block text-xs text-destructive">
+                        {errors["email"]}
+                      </span>
                     )}
                   </label>
                 </div>
@@ -796,8 +1016,10 @@ function Index() {
                     className={`${field} resize-none`}
                     placeholder="Tell me about your idea..."
                   />
-                  {errors['message'] && (
-                    <span className="mt-1.5 block text-xs text-destructive">{errors['message']}</span>
+                  {errors["message"] && (
+                    <span className="mt-1.5 block text-xs text-destructive">
+                      {errors["message"]}
+                    </span>
                   )}
                 </label>
                 <button
@@ -815,9 +1037,7 @@ function Index() {
                     </>
                   )}
                 </button>
-                <p className="mono-label mt-4 block text-center">
-                  Typical reply within 1–2 days
-                </p>
+                <p className="mono-label mt-4 block text-center">Typical reply within 1–2 days</p>
               </form>
             </Reveal>
           </div>
@@ -839,15 +1059,22 @@ function Index() {
           <nav aria-label="Footer navigation">
             <p className="mono-label">Navigate</p>
             <ul className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-muted-foreground">
-              {["Home", "About", "Education", "Skills", "Experience", "Services", "Portfolio", "Contact"].map(
-                (l) => (
-                  <li key={l}>
-                    <a href={`#${l.toLowerCase()}`} className="link-underline hover:text-primary">
-                      {l}
-                    </a>
-                  </li>
-                ),
-              )}
+              {[
+                ["Home", "home"],
+                ["About", "about"],
+                ["Education", "education"],
+                ["Skills", "skills"],
+                ["Experience", "experience"],
+                ["Services", "services"],
+                ["Projects", "portfolio"],
+                ["Contact", "contact"],
+              ].map(([l, id]) => (
+                <li key={l}>
+                  <a href={`#${id}`} className="link-underline hover:text-primary">
+                    {l}
+                  </a>
+                </li>
+              ))}
             </ul>
           </nav>
           <div>
@@ -870,9 +1097,12 @@ function Index() {
         </div>
         <div className="mx-auto mt-10 flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-border/60 pt-6 text-center sm:flex-row sm:text-left">
           <p className="text-xs text-muted-foreground">
-            Designed &amp; developed by <span className="font-medium text-foreground">Shantanu Singh</span>
+            Designed &amp; developed by{" "}
+            <span className="font-medium text-foreground">Shantanu Singh</span>
           </p>
-          <p className="mono-label">© 2026 · All rights reserved</p>
+          <p className="mono-label">
+            © {new Date().getFullYear()} Shantanu Singh · All rights reserved
+          </p>
         </div>
       </footer>
 

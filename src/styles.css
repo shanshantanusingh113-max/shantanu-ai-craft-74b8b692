@@ -384,14 +384,188 @@
 
 @utility reveal {
   opacity: 0;
-  transform: translateY(22px);
+  transform: translateY(26px);
   transition:
-    opacity 0.7s var(--ease-spring),
-    transform 0.7s var(--ease-spring);
+    opacity 0.8s var(--ease-spring),
+    transform 0.8s var(--ease-spring),
+    filter 0.8s var(--ease-spring);
+  &[data-variant="left"] {
+    transform: translateX(-36px);
+  }
+  &[data-variant="right"] {
+    transform: translateX(36px);
+  }
+  &[data-variant="scale"] {
+    transform: scale(0.94);
+  }
+  &[data-variant="blur"] {
+    transform: translateY(14px);
+    filter: blur(10px);
+  }
   &[data-visible="true"] {
     opacity: 1;
     transform: none;
+    filter: none;
   }
+}
+
+/* ── Motion system ─────────────────────────────────────────────────────── */
+
+@keyframes charRise {
+  from {
+    opacity: 0;
+    transform: translateY(0.6em) rotate(6deg);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+.split-char {
+  display: inline-block;
+  animation: charRise 0.75s var(--ease-spring) both;
+}
+
+/* Section heading accent line draws in */
+.reveal .heading-line {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.9s var(--ease-spring) 0.2s;
+}
+.reveal[data-visible="true"] .heading-line {
+  transform: scaleX(1);
+}
+
+/* Skill bars fill one segment after another once visible */
+.reveal .bar-seg {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s var(--ease-spring);
+}
+.reveal[data-visible="true"] .bar-seg {
+  transform: scaleX(1);
+}
+
+/* Timeline spine grows downward */
+.timeline-spine {
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 1.4s var(--ease-spring);
+}
+.reveal[data-visible="true"] .timeline-spine,
+.timeline-spine[data-visible="true"] {
+  transform: scaleY(1);
+}
+
+/* 3D tilt card */
+.tilt {
+  --rx: 0deg;
+  --ry: 0deg;
+  --gx: 50%;
+  --gy: 50%;
+  position: relative;
+  transform: perspective(1100px) rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition: transform 0.5s var(--ease-spring);
+  will-change: transform;
+}
+.tilt-glare {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    600px circle at var(--gx) var(--gy),
+    color-mix(in oklab, var(--primary) 14%, transparent),
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.tilt:hover .tilt-glare {
+  opacity: 1;
+}
+
+.magnetic {
+  transition: transform 0.35s var(--ease-spring);
+}
+
+/* Marquee */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 32s linear infinite;
+}
+.marquee-mask:hover .marquee-track {
+  animation-play-state: paused;
+}
+.marquee-mask {
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+
+/* Animated gradient on the hero name + primary button shine */
+.text-gradient {
+  animation: gradientShift 8s ease-in-out infinite;
+}
+@keyframes shine {
+  from {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-20deg);
+  }
+}
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, oklch(1 0 0 / 35%), transparent);
+  transform: translateX(-120%) skewX(-20deg);
+  z-index: -1;
+}
+.btn-shine:hover::after {
+  animation: shine 0.9s var(--ease-spring);
+}
+
+/* Rotating conic ring behind the portrait */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.orbit-ring {
+  background: conic-gradient(from 0deg, var(--neon), transparent 30%, var(--neon-2), transparent 70%, var(--neon));
+  animation: spin 14s linear infinite;
+}
+
+/* Browser-window mockup screen scroll for the featured project */
+@keyframes screenScroll {
+  0%,
+  12% {
+    transform: translateY(0);
+  }
+  50%,
+  62% {
+    transform: translateY(-42%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.screen-scroll {
+  animation: screenScroll 12s var(--ease-spring) infinite;
 }
 
 @layer base {
@@ -446,6 +620,20 @@
     .reveal {
       opacity: 1 !important;
       transform: none !important;
+      filter: none !important;
+    }
+    .reveal .bar-seg,
+    .reveal .heading-line,
+    .timeline-spine {
+      transform: none !important;
+    }
+    .tilt {
+      transform: none !important;
+    }
+    .marquee-track,
+    .screen-scroll,
+    .orbit-ring {
+      animation: none !important;
     }
   }
 }

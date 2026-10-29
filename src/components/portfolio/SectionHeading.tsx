@@ -14,14 +14,15 @@ export function SectionHeading({
   align?: "left" | "center";
 }) {
   return (
-    <Reveal className={`mb-12 ${align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-3xl"}`}>
-      <div
-        className={`flex items-center gap-3 ${align === "center" ? "justify-center" : ""}`}
-      >
+    <Reveal
+      variant="blur"
+      className={`mb-12 ${align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-3xl"}`}
+    >
+      <div className={`flex items-center gap-3 ${align === "center" ? "justify-center" : ""}`}>
         <span className="font-mono text-[11px] font-medium tracking-[0.2em] text-primary">
           {index}
         </span>
-        <span className="h-px w-8 bg-border" />
+        <span className="heading-line h-px w-10 bg-gradient-to-r from-primary to-accent" />
         <span className="mono-label">{eyebrow}</span>
       </div>
       <h2 className="mt-4 text-[1.75rem] font-bold leading-[1.15] sm:text-4xl">{title}</h2>

@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { Toaster } from "../components/ui/sonner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { SITE, jsonLd } from "../lib/site";
 
 function NotFoundComponent() {
   return (
@@ -77,16 +78,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Shantanu Singh — AI & ML Student Portfolio" },
-      {
-        name: "description",
-        content:
-          "Portfolio of Shantanu Singh, B.Tech CSE (AI & ML) student at JSS University — Python, C++, machine learning and UI/UX.",
-      },
-      { name: "author", content: "Shantanu Singh" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      { title: SITE.title },
+      { name: "description", content: SITE.description },
+      { name: "author", content: SITE.name },
+      { name: "keywords", content: SITE.keywords },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { name: "theme-color", content: "#12131c" },
+      { name: "color-scheme", content: "dark light" },
+      { name: "format-detection", content: "telephone=no" },
     ],
     links: [
       {
@@ -99,7 +99,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", href: "/icon.svg", type: "image/svg+xml" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: "/site.webmanifest" },
+    ],
+    scripts: [
+      // Apply saved theme before paint — no light/dark flash on load.
+      {
+        children: `(function(){try{var t=localStorage.getItem("theme");if(!t)t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";if(t==="dark")document.documentElement.classList.add("dark")}catch(e){document.documentElement.classList.add("dark")}})()`,
+      },
+      { type: "application/ld+json", children: JSON.stringify(jsonLd()) },
     ],
   }),
 
@@ -111,7 +121,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
@@ -134,4 +144,3 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
-

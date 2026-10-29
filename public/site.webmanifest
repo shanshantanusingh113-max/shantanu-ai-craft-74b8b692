@@ -1,0 +1,14 @@
+{
+  "name": "Shantanu Singh — Portfolio",
+  "short_name": "Shantanu",
+  "description": "AI & ML student · Python & C++ developer",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#12131c",
+  "theme_color": "#7c6cf0",
+  "icons": [
+    { "src": "/icon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512" },
+    { "src": "/apple-touch-icon.png", "type": "image/png", "sizes": "180x180" }
+  ]
+}
