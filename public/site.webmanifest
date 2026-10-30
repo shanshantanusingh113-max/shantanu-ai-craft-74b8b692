@@ -4,8 +4,8 @@
   "description": "AI & ML student · Python & C++ developer",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#111214",
-  "theme_color": "#111214",
+  "background_color": "#ffffff",
+  "theme_color": "#7c6cf0",
   "icons": [
     { "src": "/icon.svg", "type": "image/svg+xml", "sizes": "any" },
     { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512" },

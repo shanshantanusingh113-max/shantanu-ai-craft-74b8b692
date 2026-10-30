@@ -82,8 +82,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: SITE.title },
       { name: "description", content: SITE.description },
       { name: "author", content: SITE.name },
-      { name: "theme-color", content: "#111214" },
-      { name: "color-scheme", content: "dark" },
+      { name: "keywords", content: SITE.keywords },
+      { name: "robots", content: "index, follow, max-image-preview:large" },
+      { name: "theme-color", content: "#ffffff" },
+      { name: "color-scheme", content: "light" },
+      { name: "format-detection", content: "telephone=no" },
     ],
     links: [
       {
@@ -96,9 +99,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "manifest", href: "/site.webmanifest" },
     ],
     scripts: [
-      // Lets scroll reveals hide content only when JavaScript will reveal it again.
+      // Before paint: flag JS for reveal animations,
+      // and only play the intro animation once per browser session.
       {
-        children: `document.documentElement.classList.add("js")`,
+        children: `(function(){var d=document.documentElement;d.classList.add("js");try{if(sessionStorage.getItem("booted"))d.classList.add("seen");else sessionStorage.setItem("booted","1")}catch(e){}})()`,
       },
       { type: "application/ld+json", children: JSON.stringify(jsonLd()) },
     ],

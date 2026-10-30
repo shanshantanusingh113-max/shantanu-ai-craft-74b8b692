@@ -5,7 +5,6 @@ export type ProjectVisual = "reward" | "ledger" | "anomaly" | "legal" | "ocean" 
 export type Project = {
   id: string;
   name: string;
-  kind: string;
   tagline: string;
   summary: string;
   award?: string;
@@ -20,7 +19,6 @@ export const PROJECTS: Project[] = [
   {
     id: "ml-debug-env",
     name: "ML Debug Env",
-    kind: "RL for LLMs",
     tagline: "An RL environment that teaches LLMs to debug PyTorch code",
     summary:
       "A partially observable reinforcement-learning environment where an LLM agent diagnoses and fixes broken PyTorch training scripts through diagnostic tool calls.",
@@ -37,7 +35,6 @@ export const PROJECTS: Project[] = [
   {
     id: "sentineliq",
     name: "SentinelIQ",
-    kind: "Fraud detection",
     tagline: "Real-time insider fraud detection with explained alerts",
     summary:
       "Per-employee behavioural baselines feed an Isolation Forest, LSTM autoencoder and XGBoost ensemble. Every alert is explained with SHAP and grouped into fraud cases.",
@@ -54,7 +51,6 @@ export const PROJECTS: Project[] = [
   {
     id: "ledgerlens",
     name: "LedgerLens",
-    kind: "Fintech ML",
     tagline: "AI copilot for GST reconciliation",
     summary:
       "Reconciles invoices against the ledger, bank statement and GSTR-2B, and prices every mismatch in rupees.",
@@ -71,7 +67,6 @@ export const PROJECTS: Project[] = [
   {
     id: "courtmitra",
     name: "CourtMitra",
-    kind: "Legal NLP",
     tagline: "Indian court judgments, in plain language",
     summary:
       "Turns court judgments into plain-language summaries, legal entities, reasoning flowcharts and Hindi translations.",
@@ -87,7 +82,6 @@ export const PROJECTS: Project[] = [
   {
     id: "samudra",
     name: "SAMUDRA",
-    kind: "Scientific viz",
     tagline: "3D ocean data explorer for INCOIS",
     summary:
       "An interactive 3D platform fusing NOAA WOA23 ocean fields with Argo floats, gliders, BGC floats and real HYCOM currents.",
@@ -106,7 +100,6 @@ export const PROJECTS: Project[] = [
   {
     id: "solar-system-lab",
     name: "Solar System Lab",
-    kind: "Simulation",
     tagline: "Planetary science in the browser",
     summary:
       "A 3D orrery driven by NASA JPL orbital elements, solving Kepler's equation every frame with Newton's method.",
@@ -228,12 +221,27 @@ export const SKILL_MATRIX: { skill: string; uses: string[] }[] = [
 export const JOURNEY = [
   {
     when: "2025",
-    title: "B.Tech CSE (AI & ML), JSS University, Noida",
-    body: "Coursework in machine learning, data structures and algorithms, Python, C/C++ and database systems.",
+    title: "Started B.Tech CSE (AI & ML)",
+    body: "JSS University, Noida. Coursework in machine learning, DSA, Python, C/C++ and database systems.",
+  },
+  {
+    when: "2026",
+    title: "Smart India Hackathon — SAMUDRA",
+    body: "A 3D ocean data explorer for INCOIS built on real NOAA, Argo and HYCOM data.",
+  },
+  {
+    when: "2026",
+    title: "Grand Finalist, iDEA 2.0",
+    body: "Top 40 of 1,500 teams with SentinelIQ, a real-time insider-fraud early-warning system.",
+  },
+  {
+    when: "2026",
+    title: "Grand Finalist, OpenEnv Hackathon",
+    body: "Top 100 of 31,000 teams with an RL environment that trains models to debug code.",
   },
   {
     when: "2029",
-    title: "Expected graduation",
+    title: "Graduation (expected)",
     body: "Looking for ML engineering internships in the meantime.",
   },
 ];
