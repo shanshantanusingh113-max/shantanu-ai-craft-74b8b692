@@ -4,10 +4,10 @@ import { ArrowUpRight, Check, Copy } from "lucide-react";
 import { toast } from "sonner";
 import { Nav } from "@/components/portfolio/Nav";
 import { InView } from "@/components/portfolio/Motion";
-import { ProjectList, SkillHeatmap } from "@/components/portfolio/Sections";
-import { AWARDS, JOURNEY, PROJECTS, SKILL_GROUPS } from "@/lib/content";
+import { Console } from "@/components/portfolio/Console";
+import { ActivityPanel, RunsTable, SkillHeatmap } from "@/components/portfolio/Sections";
+import { AWARDS, JOURNEY, SKILL_GROUPS } from "@/lib/content";
 import { SITE } from "@/lib/site";
-import profile from "@/assets/shantanu.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -30,39 +30,61 @@ export const Route = createFileRoute("/")({
 
 const SOURCE = "https://github.com/shanshantanusingh113-max/shantanu-ai-craft-74b8b692";
 
-/** Two-column section: label on the left, content on the right. */
+const CONSOLE = [
+  {
+    cmd: "whoami",
+    out: ["Shantanu Singh. ML engineer, B.Tech CSE (AI & ML) at JSS University, Noida."],
+  },
+  {
+    cmd: "cat focus.txt",
+    out: [
+      "Training and evaluating models, then building the software around them.",
+      "Mostly Python and PyTorch, with FastAPI and React.",
+    ],
+  },
+  {
+    cmd: "grep finalist awards.log",
+    out: [
+      "2026  OpenEnv Hackathon   top 100 / 31,000",
+      "2026  iDEA 2.0             top 40 / 1,500",
+    ],
+  },
+];
+
 function Section({
   id,
   title,
+  note,
   children,
-  full,
 }: {
   id: string;
   title: string;
-  children?: ReactNode;
-  /** content that spans both columns, below the label row */
-  full?: ReactNode;
+  note?: string;
+  children: ReactNode;
 }) {
   return (
-    <section id={id} className="mx-auto max-w-5xl px-5 py-20 sm:py-24">
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-y-6 sm:grid-cols-[9rem_minmax(0,1fr)] sm:gap-x-6">
-        <InView as="h2" reveal="up" className="text-sm font-medium">
-          {title}
-        </InView>
-        <div className="min-w-0">{children}</div>
-      </div>
-      {full && <div className="mt-10">{full}</div>}
+    <section id={id} className="mx-auto max-w-5xl px-5 py-16 sm:py-20">
+      <InView
+        reveal="up"
+        className="mb-8 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2"
+      >
+        <h2 className="font-mono text-lg">
+          <span className="text-accent">#</span> {title}
+        </h2>
+        {note && <p className="max-w-md text-sm text-muted-foreground">{note}</p>}
+      </InView>
+      {children}
     </section>
   );
 }
 
-function ExtLink({ href, children }: { href: string; children: ReactNode }) {
+function Ext({ href, children }: { href: string; children: ReactNode }) {
   const external = href.startsWith("http") || href.endsWith(".pdf");
   return (
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noopener" } : {})}
-      className="link inline-flex items-center gap-1 font-medium"
+      className="link inline-flex items-center gap-1"
     >
       {children}
       {external && <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground" />}
@@ -90,100 +112,114 @@ function Index() {
 
       <main>
         {/* ── Intro ─────────────────────────────────────────────── */}
-        <section className="mx-auto max-w-5xl px-5 pb-20 pt-20 sm:pb-28 sm:pt-32">
-          <p
-            className="enter flex items-center gap-2 text-sm text-muted-foreground"
-            style={{ ["--d" as string]: "0ms" }}
-          >
-            <span className="live-dot h-1.5 w-1.5 rounded-full bg-accent" />
-            Open to ML engineering internships
-          </p>
-          <h1
-            className="enter mt-6 max-w-[22ch] text-[clamp(2.1rem,5vw,3.6rem)] font-medium leading-[1.08] tracking-[-0.035em]"
-            style={{ ["--d" as string]: "80ms" }}
-          >
-            I build machine learning systems end to end, from training runs to the software people
-            use.
-          </h1>
-          <p
-            className="enter mt-6 max-w-[58ch] text-lg leading-relaxed text-muted-foreground"
-            style={{ ["--d" as string]: "180ms" }}
-          >
-            I'm Shantanu, an AI &amp; ML undergraduate at JSS University, Noida. Two of my projects
-            reached national hackathon finals this year. Most of my work is in Python and PyTorch,
-            with FastAPI and React around it.
-          </p>
-          <div
-            className="enter mt-8 flex flex-wrap gap-x-6 gap-y-3 text-[0.95rem]"
-            style={{ ["--d" as string]: "280ms" }}
-          >
-            <ExtLink href={`mailto:${SITE.email}`}>Email</ExtLink>
-            <ExtLink href={SITE.github}>GitHub</ExtLink>
-            <ExtLink href={SITE.linkedin}>LinkedIn</ExtLink>
-            <ExtLink href={SITE.resume}>Resume</ExtLink>
+        <section className="mx-auto grid max-w-5xl items-start gap-12 px-5 pb-16 pt-16 sm:pt-24 lg:grid-cols-[1fr_1.05fr]">
+          <div>
+            <p
+              className="enter flex items-center gap-2 font-mono text-xs text-muted-foreground"
+              style={{ ["--d" as string]: "0ms" }}
+            >
+              <span className="live-dot h-1.5 w-1.5 rounded-full bg-ok" />
+              open to ML engineering internships
+            </p>
+            <h1
+              className="enter mt-5 text-[clamp(2.4rem,6vw,3.75rem)] font-semibold leading-[1.02] tracking-[-0.04em]"
+              style={{ ["--d" as string]: "60ms" }}
+            >
+              Shantanu Singh
+            </h1>
+            <p
+              className="enter mt-5 max-w-[46ch] text-lg leading-relaxed text-muted-foreground"
+              style={{ ["--d" as string]: "140ms" }}
+            >
+              I build machine learning systems end to end: the training run, the evaluation, and the
+              app someone actually uses. Two national hackathon finals this year.
+            </p>
+            <div
+              className="enter mt-7 flex flex-wrap gap-x-6 gap-y-3 font-mono text-sm"
+              style={{ ["--d" as string]: "220ms" }}
+            >
+              <Ext href={`mailto:${SITE.email}`}>email</Ext>
+              <Ext href={SITE.github}>github</Ext>
+              <Ext href={SITE.linkedin}>linkedin</Ext>
+              <Ext href={SITE.resume}>resume</Ext>
+            </div>
+          </div>
+          <div className="enter" style={{ ["--d" as string]: "200ms" }}>
+            <Console lines={CONSOLE} />
           </div>
         </section>
 
-        {/* ── Work ──────────────────────────────────────────────── */}
-        <Section id="work" title="Selected work" full={<ProjectList />}>
-          <p className="max-w-[60ch] text-muted-foreground">
-            {PROJECTS.length} projects. The first two reached national hackathon finals. Open one
-            for the details.
-          </p>
+        {/* ── Projects ──────────────────────────────────────────── */}
+        <Section
+          id="projects"
+          title="projects"
+          note="Click a row for details. Deployed demos are checked live from the server."
+        >
+          <RunsTable />
         </Section>
 
-        {/* ── Recognition ───────────────────────────────────────── */}
-        <Section id="recognition" title="Recognition">
-          <ul className="border-t border-line">
+        {/* ── Activity ──────────────────────────────────────────── */}
+        <Section
+          id="activity"
+          title="activity"
+          note="Public GitHub activity, refreshed every few minutes."
+        >
+          <ActivityPanel profileUrl={SITE.github} />
+          <ul className="mt-8 border-t border-line">
             {AWARDS.map((a, i) => (
               <InView
                 as="li"
                 reveal="up"
-                delay={i * 80}
+                delay={i * 70}
                 key={a.title}
-                className="grid grid-cols-[3.5rem_1fr] gap-x-4 border-b border-line py-5"
+                className="grid grid-cols-[3.5rem_1fr] gap-x-4 border-b border-line py-4 sm:grid-cols-[3.5rem_1fr_auto]"
               >
                 <span className="font-mono text-sm text-muted-foreground">{a.year}</span>
-                <div>
-                  <p className="font-medium">
-                    {a.result}, {a.title}
-                  </p>
-                  <p className="mt-1 text-[0.95rem] text-muted-foreground">
-                    Top {a.rank} of {a.of.toLocaleString("en-IN")} teams with {a.project}
-                  </p>
-                </div>
+                <span>
+                  {a.result}, {a.title}
+                  <span className="block text-sm text-muted-foreground sm:inline">
+                    <span className="hidden sm:inline"> — </span>with {a.project}
+                  </span>
+                </span>
+                <span className="col-start-2 font-mono text-sm text-accent sm:col-start-auto">
+                  top {a.rank} / {a.of.toLocaleString("en-IN")}
+                </span>
               </InView>
             ))}
             <InView
               as="li"
               reveal="up"
-              delay={160}
-              className="grid grid-cols-[3.5rem_1fr] gap-x-4 border-b border-line py-5"
+              delay={140}
+              className="grid grid-cols-[3.5rem_1fr] gap-x-4 border-b border-line py-4 sm:grid-cols-[3.5rem_1fr_auto]"
             >
               <span className="font-mono text-sm text-muted-foreground">2026</span>
-              <div>
-                <p className="font-medium">Smart India Hackathon</p>
-                <p className="mt-1 text-[0.95rem] text-muted-foreground">
-                  Built SAMUDRA, a 3D ocean data explorer for INCOIS
-                </p>
-              </div>
+              <span>
+                Smart India Hackathon
+                <span className="block text-sm text-muted-foreground sm:inline">
+                  <span className="hidden sm:inline"> — </span>with SAMUDRA
+                </span>
+              </span>
+              <span className="col-start-2 font-mono text-sm text-muted-foreground sm:col-start-auto">
+                participant
+              </span>
             </InView>
           </ul>
         </Section>
 
         {/* ── Skills ────────────────────────────────────────────── */}
-        <Section id="skills" title="Skills">
-          <p className="mb-8 max-w-[60ch] text-muted-foreground">
-            Where each skill was actually used. Hover a cell to trace its row and column.
-          </p>
+        <Section
+          id="skills"
+          title="skills"
+          note="Where each one was actually used. Hover to trace."
+        >
           <SkillHeatmap />
-          <InView as="dl" reveal="up" className="mt-12 border-t border-line">
+          <InView as="dl" reveal="up" className="mt-10 border-t border-line">
             {SKILL_GROUPS.map((g) => (
               <div
                 key={g.name}
                 className="grid gap-1 border-b border-line py-4 sm:grid-cols-[10rem_1fr] sm:gap-4"
               >
-                <dt className="text-sm font-medium">{g.name}</dt>
+                <dt className="font-mono text-sm">{g.name.toLowerCase()}</dt>
                 <dd className="text-[0.95rem] leading-relaxed text-muted-foreground">
                   {g.items.join(", ")}
                 </dd>
@@ -193,35 +229,20 @@ function Index() {
         </Section>
 
         {/* ── About ─────────────────────────────────────────────── */}
-        <Section id="about" title="About">
-          <div className="grid gap-10 lg:grid-cols-[1fr_11rem]">
-            <InView reveal="up" className="max-w-[62ch] space-y-4 leading-relaxed">
-              <p>
-                I like problems where the model is only half the work. A fraud detector is only
-                useful if an analyst can see why it fired, and a fine-tuned LLM is only interesting
-                if you can measure that it got better. So I spend as much time on evaluation,
-                explanations and the surrounding software as on training.
-              </p>
-              <p className="text-muted-foreground">
-                At university I'm studying machine learning, data structures and algorithms,
-                database systems and C/C++. Outside class I build projects and enter hackathons,
-                which is where most of the work above comes from.
-              </p>
-            </InView>
-            <InView reveal="up" delay={100}>
-              <img
-                src={profile}
-                alt="Shantanu Singh"
-                width={722}
-                height={714}
-                loading="lazy"
-                decoding="async"
-                className="aspect-square w-40 rounded-xl object-cover grayscale-[20%] lg:w-full"
-              />
-            </InView>
-          </div>
-
-          <ol className="mt-12 border-t border-line">
+        <Section id="about" title="about">
+          <InView reveal="up" className="max-w-[64ch] space-y-4 leading-relaxed">
+            <p>
+              I like problems where the model is only half the work. A fraud detector is only useful
+              if an analyst can see why it fired, and a fine-tuned LLM is only interesting if you
+              can measure that it got better. So I spend as much time on evaluation, explanations
+              and the surrounding software as on training.
+            </p>
+            <p className="text-muted-foreground">
+              Outside class I build projects and enter hackathons, which is where most of the work
+              above comes from.
+            </p>
+          </InView>
+          <ol className="mt-8 border-t border-line">
             {JOURNEY.map((j, i) => (
               <InView
                 as="li"
@@ -232,7 +253,7 @@ function Index() {
               >
                 <span className="font-mono text-sm text-muted-foreground">{j.when}</span>
                 <div>
-                  <p className="font-medium">{j.title}</p>
+                  <p>{j.title}</p>
                   <p className="mt-0.5 text-[0.95rem] text-muted-foreground">{j.body}</p>
                 </div>
               </InView>
@@ -241,16 +262,16 @@ function Index() {
         </Section>
 
         {/* ── Contact ───────────────────────────────────────────── */}
-        <Section id="contact" title="Contact">
+        <Section id="contact" title="contact">
           <InView reveal="up">
             <p className="max-w-[52ch] text-lg leading-relaxed text-muted-foreground">
-              I'm looking for ML engineering internships and interesting problems to work on. Email
-              is the best way to reach me.
+              I'm looking for ML engineering internships and interesting problems. Email is the
+              fastest way to reach me.
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <a
                 href={`mailto:${SITE.email}`}
-                className="link break-all text-[clamp(1.25rem,3vw,1.75rem)] font-medium tracking-tight"
+                className="link break-all font-mono text-[clamp(1.05rem,2.6vw,1.5rem)] text-accent"
               >
                 {SITE.email}
               </a>
@@ -258,31 +279,28 @@ function Index() {
                 type="button"
                 onClick={copyEmail}
                 aria-label="Copy email address"
-                className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+                className="grid h-9 w-9 shrink-0 place-items-center rounded border border-line text-muted-foreground transition-colors hover:border-accent hover:text-accent"
               >
                 {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               </button>
             </div>
-            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-[0.95rem]">
-              <ExtLink href={SITE.github}>GitHub</ExtLink>
-              <ExtLink href={SITE.linkedin}>LinkedIn</ExtLink>
-              <ExtLink href={SITE.x}>X</ExtLink>
-              <ExtLink href={SITE.resume}>Resume (PDF)</ExtLink>
+            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 font-mono text-sm">
+              <Ext href={SITE.github}>github</Ext>
+              <Ext href={SITE.linkedin}>linkedin</Ext>
+              <Ext href={SITE.x}>x</Ext>
+              <Ext href={SITE.resume}>resume.pdf</Ext>
             </div>
-            <p className="mt-8 text-sm text-muted-foreground">Based in Greater Noida, India.</p>
+            <p className="mt-8 text-sm text-muted-foreground">Greater Noida, India (IST).</p>
           </InView>
         </Section>
       </main>
 
       <footer className="border-t border-line">
-        <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-8 text-sm text-muted-foreground sm:flex-row sm:justify-between">
+        <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-7 font-mono text-xs text-muted-foreground sm:flex-row sm:justify-between">
           <p>© {new Date().getFullYear()} Shantanu Singh</p>
-          <p>
-            Built with React and TanStack Start.{" "}
-            <a href={SOURCE} target="_blank" rel="noopener" className="link text-foreground">
-              Source
-            </a>
-          </p>
+          <a href={SOURCE} target="_blank" rel="noopener" className="link hover:text-foreground">
+            source on github
+          </a>
         </div>
       </footer>
     </div>

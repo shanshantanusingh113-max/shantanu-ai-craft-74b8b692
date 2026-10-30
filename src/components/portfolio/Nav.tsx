@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
 import { SITE } from "@/lib/site";
 
 const LINKS = [
-  ["Work", "#work"],
-  ["About", "#about"],
-  ["Contact", "#contact"],
+  ["projects", "#projects"],
+  ["activity", "#activity"],
+  ["about", "#about"],
+  ["contact", "#contact"],
 ] as const;
 
 export function Nav() {
@@ -35,19 +35,19 @@ export function Nav() {
     >
       <nav
         aria-label="Main"
-        className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-6 px-5"
+        className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-6 px-5 font-mono text-sm"
       >
-        <a href="#top" className="font-medium tracking-tight">
-          Shantanu Singh
+        <a href="#top" className="flex items-center gap-2">
+          <span className="text-accent">~/</span>shantanu
         </a>
-        <ul className="flex items-center gap-5 text-sm sm:gap-7">
+        <ul className="flex items-center gap-5 sm:gap-6">
           {LINKS.map(([label, href]) => (
-            <li key={href} className="hidden sm:block">
+            <li key={href} className="hidden md:block">
               <a
                 href={href}
                 aria-current={active === href ? "true" : undefined}
                 className={`transition-colors hover:text-foreground ${
-                  active === href ? "text-foreground" : "text-muted-foreground"
+                  active === href ? "text-accent" : "text-muted-foreground"
                 }`}
               >
                 {label}
@@ -59,9 +59,9 @@ export function Nav() {
               href={SITE.resume}
               target="_blank"
               rel="noopener"
-              className="inline-flex items-center gap-1 rounded-full border border-line px-3.5 py-1.5 font-medium transition-colors hover:border-foreground"
+              className="rounded border border-line px-2.5 py-1 transition-colors hover:border-accent hover:text-accent"
             >
-              Resume <ArrowUpRight className="h-3.5 w-3.5" />
+              resume.pdf
             </a>
           </li>
         </ul>

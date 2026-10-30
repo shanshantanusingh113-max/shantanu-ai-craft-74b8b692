@@ -18,20 +18,22 @@
   --color-popover: var(--background);
   --color-popover-foreground: var(--foreground);
   --color-primary: var(--accent);
-  --color-primary-foreground: #ffffff;
+  --color-primary-foreground: #111214;
   --color-secondary: var(--subtle);
   --color-secondary-foreground: var(--foreground);
   --color-muted: var(--subtle);
   --color-muted-foreground: var(--muted);
   --color-accent: var(--accent);
-  --color-accent-foreground: #ffffff;
-  --color-destructive: #b42318;
+  --color-accent-foreground: #111214;
+  --color-destructive: var(--bad);
   --color-destructive-foreground: #ffffff;
   --color-border: var(--line);
   --color-input: var(--line);
   --color-ring: var(--accent);
   --color-subtle: var(--subtle);
   --color-line: var(--line);
+  --color-ok: var(--ok);
+  --color-bad: var(--bad);
   --color-v1: var(--v1);
   --color-v2: var(--v2);
   --color-v3: var(--v3);
@@ -41,16 +43,18 @@
 }
 
 :root {
-  --radius: 0.6rem;
-  --background: #ffffff;
-  --foreground: #16161a;
-  --muted: #67666f;
-  --subtle: #f6f6f8;
-  --line: #ecebef;
-  --accent: #1d7f68;
+  --radius: 0.5rem;
+  --background: #111214;
+  --foreground: #ecebe7;
+  --muted: #8e9098;
+  --subtle: #18191c;
+  --line: #26272c;
+  --accent: #f0b44c; /* instrument amber */
+  --ok: #4fbf8f;
+  --bad: #ef6b5b;
 
   /* viridis — only used inside data visuals */
-  --v1: #3b1f6e;
+  --v1: #46247a;
   --v2: #2d708e;
   --v3: #22a07a;
   --v4: #8cc63f;
@@ -314,7 +318,11 @@
     border-radius: 4px;
   }
   ::selection {
-    background: color-mix(in oklab, var(--accent) 20%, transparent);
+    background: color-mix(in oklab, var(--accent) 35%, transparent);
+    color: var(--foreground);
+  }
+  html {
+    color-scheme: dark;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -336,4 +344,41 @@
       transform: none !important;
     }
   }
+}
+
+/* ── Terminal bits ───────────────────────────────────────────────────── */
+
+.caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.1em;
+  translate: 0 0.18em;
+  background: var(--accent);
+  animation: caret 1.05s steps(1) infinite;
+}
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.scan {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 2px,
+    rgb(255 255 255 / 1.6%) 2px 3px
+  );
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--subtle), #212227, var(--subtle)) 0 0 / 200% 100%;
+  animation: shimmer 1.6s linear infinite;
 }
